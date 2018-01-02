@@ -68,7 +68,6 @@ class Canvas{
     CreatedCanvas.style.display="block"
     CreatedCanvas.style.margin ="0 auto"
     Body.appendChild(CreatedCanvas)
-
   }
 
   }
@@ -96,13 +95,12 @@ class Picture{
     // this.Canvas.create()
     let CanVas = document.getElementById(this.Canvas.Id)
     this.CTX = CanVas.getContext('2d')
+    this.CTX.globalCompositeOperation='destination-over'
     this.Img.src = this.ImgLink
   }
 
   draw(){
-    this.CTX.drawImage(this.Img, this.Posistion.X, this.Posistion.Y, 100, 50);
-    // this.CTX.drawImage(this.Img, this.Posistion.X+this.Canvas.Width, this.Posistion.Y, this.Canvas.Width, 50);
-    // if (this.Posistion.X<=-this.Canvas.Width) {this.Posistion.X=0}
+    this.CTX.drawImage(this.Img, this.Posistion.X, this.Posistion.Y, 100, 100);
   }
 
   move(){
@@ -115,46 +113,16 @@ class Picture{
 }
 
 class BGround extends Picture  {
-  // constructor(x1=0,y1=0, xvelocity1=0, ilink1=null, canvas1){
-  //   this.Posistion = new Pos(x1,y1)
-  //   this.ImgLink = ilink1
-  //   this.XVelocity = xvelocity1
-  //   this.Canvas = canvas1
-  //   this.Img = new Image()
-  //   this.CTX = null
-  //   this.RAF = null
-  // }
+
   constructor(x1=0,y1=0, xvelocity1=0, ilink1=null, canvas1){
     super(x1,y1,xvelocity1, ilink1,canvas1)
   }
-
-  // get position(){return this.Posistion}
-  // set position(position1){this.Posistion = position1}
-  // get imglink(){return this.ImgLink}
-  // set imglink(ilink1){this.ImgLink = ilink1}
-  // get imglink(){return this.XVelocity}
-  // set imglink(xvelocity1){this.XVelocity = xvelocity1}
-
-  // init(){
-  //   this.Canvas.create()
-  //   let CanVas = document.getElementById(this.Canvas.Id)
-  //   this.CTX = CanVas.getContext('2d')
-  //   this.Img.src = this.ImgLink
-  // }
 
   draw(){
     this.CTX.drawImage(this.Img, this.Posistion.X, this.Posistion.Y, this.Canvas.Width, 50);
     this.CTX.drawImage(this.Img, this.Posistion.X+this.Canvas.Width, this.Posistion.Y, this.Canvas.Width, 50);
     if (this.Posistion.X<=-this.Canvas.Width) {this.Posistion.X=0}
   }
-
-  // move(){
-  //   this.CTX.clearRect(0,0, this.Canvas.Width, this.Canvas.Height)
-  //   this.draw()
-  //   this.Posistion.X -= this.XVelocity
-  //   this.RAF = window.requestAnimationFrame(this.move.bind(this))
-  // }
-
 }
 
 
@@ -162,7 +130,6 @@ class BGround extends Picture  {
 class Obstacle extends Picture{
   constructor(x1=0,y1=0, xvelocity1=0, ilink1=null, canvas1){
     super(x1,y1,xvelocity1, ilink1,canvas1)
-    this.Img.style.zIndex=-1
   }
 
 
@@ -172,14 +139,11 @@ var raf
 // let p = new Pos(0,450)
 let can = new Canvas(750, 500, "cas")
 let img = new BGround(0,450, 5, "ground.png", can)
-let obs = new Obstacle(750,420, 5, "obs.png", can)
+let obs = new Obstacle(750,370, 5, "obs.png", can)
 
 can.create()
 img.init()
-// img.move()
-
 obs.init()
-// obs.move()
 
 function move(){
   img.CTX.clearRect(0,0, 750, 500)
