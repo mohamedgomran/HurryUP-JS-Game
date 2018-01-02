@@ -1,0 +1,15 @@
+@keyframes image{
+
+	50% {top:250;}
+	100%{top:400;}
+}
+#penguin{
+	position: fixed;
+    width: 70;
+    height: 150;
+    top: 400;
+    left: 50;
+    /*-webkit-animation-iteration-count: infinite;
+    -o-animation-iteration-count: infinite;*/
+    animation-iteration-count: infinite;
+}
