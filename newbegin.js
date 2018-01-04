@@ -46,6 +46,7 @@ class Div{
     this.Id = id1
     this.Class=class1
   }
+
   create(){
     let CreatedDiv = document.createElement('div')
     let MainDiv = document.getElementById("main")
@@ -66,20 +67,19 @@ class Div{
 }
 
 class Picture{
-  constructor(x1=0,y1=0, velocity1=0, ilink1=null, div1){
-    this.Posistion = new Pos(x1,y1)
+  constructor(div1, velocity1=0, ilink1=null){
+    this.Posistion = new Pos(div1.Right,div1.Bottom)
     this.ImgLink = ilink1
     this.Velocity = velocity1
     this.Div = div1
   }
+
   init(){
     let CurrentDiv = document.getElementById(this.Div.Id)
     let CreatedImg = document.createElement('img')
     CreatedImg.src = this.ImgLink
     CreatedImg.className = "imgindiv"
-    console.log(CreatedImg)
     CurrentDiv.appendChild(CreatedImg)
-
   }
 
   move(){
@@ -92,13 +92,14 @@ class Picture{
 
 
 var xx = new Div(100,100,35,-100,"obsdivvvv","obs")
-var yy = new Picture(-100,0,5,"obs.png",xx)
+var yy = new Picture(xx, 5, "imgs/obs.png")
 
 var xxx = new Div(760,70,0,0,"footerdiv1","footer")
-var yyy = new Picture(0,0,5,"ground.png",xxx)
+var yyy = new Picture(xxx, 5, "imgs/ground.png")
 
-var xxxx = new Div(760,70,0,0,"footerdiv2","footer")
-var yyyy = new Picture(-760,0,5,"ground.png",xxxx)
+var xxxx = new Div(760,70,0,-760,"imgs/footerdiv2","footer")
+var yyyy = new Picture(xxxx, 5, "imgs/ground.png")
+
 xx.create()
 yy.init()
 xxx.create()
@@ -110,7 +111,8 @@ yyyy.init()
 let SetInterval=null
 document.addEventListener("keydown", function(){
   if(SetInterval===null){
-    SetInterval = setInterval(function(){yy.move();yyy.move();yyyy.move()},16)
+    SetInterval = setInterval(function(){
+      yy.move();yyy.move();yyyy.move()},16)
   }
 })
 
