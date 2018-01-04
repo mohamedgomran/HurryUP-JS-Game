@@ -67,7 +67,7 @@ class Div{
 }
 
 class Picture{
-  constructor(div1, velocity1=0, ilink1=null){
+  constructor(div1, velocity1=5, ilink1=null){
     this.Posistion = new Pos(div1.Right,div1.Bottom)
     this.ImgLink = ilink1
     this.Velocity = velocity1
@@ -83,7 +83,6 @@ class Picture{
   }
 
   move(){
-
     let CurrentDivMove = document.getElementById(this.Div.Id)
     CurrentDivMove.style.right = `${this.Posistion.X}px`
     this.Posistion.X += 5
@@ -92,8 +91,15 @@ class Picture{
 }
 
 
+class Obstacle extends Picture{
+  constructor(div1, velocity1=5, ilink1=null){
+    super(div1, velocity1, ilink1)
+  }
+    // To override move() with collision detection
+}
+
 class Character extends Picture{
-  constructor(div1, velocity1=0, ilink1=null){
+  constructor(div1, velocity1=5, ilink1=null){
     super(div1, velocity1, ilink1)
     this.IsTop=0
   }
