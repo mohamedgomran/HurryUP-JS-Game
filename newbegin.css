@@ -12,23 +12,23 @@
 
 .footer{
 	position: absolute;
-	bottom: 0px;
+/*	bottom: 0px;
 	width: 750px;
-	height: 70px;
+	height: 70px;*/
 	z-index: -1;
 
 }
 
-#footerdiv2{
+/*#footerdiv2{
 	right: -750px;
-}
+}*/
 
 .obs{
 	position: absolute;
-	bottom: 30px;
+/*	bottom: 30px;
 	right: -100px;
 	width: 100px;
-	height: 100px;
+	height: 100px;*/
 	z-index: -2;
 }
 
