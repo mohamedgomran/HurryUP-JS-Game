@@ -83,6 +83,7 @@ class Picture{
   }
 
   move(){
+
     let CurrentDivMove = document.getElementById(this.Div.Id)
     CurrentDivMove.style.right = `${this.Posistion.X}px`
     this.Posistion.X += 5
@@ -91,14 +92,40 @@ class Picture{
 }
 
 
+class Character extends Picture{
+  constructor(div1, velocity1=0, ilink1=null){
+    super(div1, velocity1, ilink1)
+    this.IsTop=0
+  }
+
+  move(){
+
+    let CurrentDivMove = document.getElementById(this.Div.Id)
+    CurrentDivMove.style.bottom = `${this.Posistion.Y}px`
+    if (this.Posistion.Y<200 && !this.IsTop) {
+      this.Posistion.Y+=this.Velocity
+      if(this.Posistion.Y==200){this.IsTop=1}
+    }
+    else if (this.Posistion.Y>20) {
+      this.Posistion.Y -= this.Velocity
+      if(this.Posistion.Y==20){this.IsTop=0;clearInterval(SetIntervalChar);SetIntervalChar=null}
+    }
+
+  }
+}
+
 var xx = new Div(100,100,35,-100,"obsdivvvv","obs")
 var yy = new Picture(xx, 5, "imgs/obs.png")
 
 var xxx = new Div(760,70,0,0,"footerdiv1","footer")
 var yyy = new Picture(xxx, 5, "imgs/ground.png")
 
-var xxxx = new Div(760,70,0,-760,"imgs/footerdiv2","footer")
+var xxxx = new Div(760,70,0,-760,"footerdiv2","footer")
 var yyyy = new Picture(xxxx, 5, "imgs/ground.png")
+
+
+var xxxxx = new Div(100,100,20,500,"characterdiv","character")
+var yyyyy = new Character(xxxxx, 5, "imgs/penguin.png")
 
 xx.create()
 yy.init()
@@ -106,13 +133,26 @@ xxx.create()
 yyy.init()
 xxxx.create()
 yyyy.init()
+xxxxx.create()
+yyyyy.init()
+
 
 
 let SetInterval=null
-document.addEventListener("keydown", function(){
+let SetIntervalChar=null
+document.addEventListener("keydown", function(e){
+  if(SetIntervalChar===null){
+    console.log('sdfsdvgsdf')
+    SetIntervalChar = setInterval(function(){
+      if(e.keyCode==32){yyyyy.move()}
+    },16)
+  }
   if(SetInterval===null){
     SetInterval = setInterval(function(){
-      yy.move();yyy.move();yyyy.move()},16)
+      yy.move()
+      yyy.move()
+      yyyy.move()
+    },16)
   }
 })
 
