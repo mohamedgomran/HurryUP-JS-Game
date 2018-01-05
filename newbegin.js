@@ -45,6 +45,7 @@ class Div{
     this.Right = right1
     this.Id = id1
     this.Class=class1
+    this.create()
   }
 
   create(){
@@ -55,7 +56,6 @@ class Div{
     CreatedDiv.style.height = `${this.Height}px`
     CreatedDiv.style.bottom = `${this.Bottom}px`
     CreatedDiv.style.right = `${this.Right}px`
-    CreatedDiv.style.zIndex = this.ZIndex
     CreatedDiv.style.position = "absolute"
 
     CreatedDiv.id = this.Id
@@ -72,6 +72,7 @@ class Picture{
     this.ImgLink = ilink1
     this.Velocity = velocity1
     this.Div = div1
+    this.init()
   }
 
   init(){
@@ -117,7 +118,6 @@ class Character extends Picture{
       this.Posistion.Y -= this.Velocity
       if(this.Posistion.Y==this.Div.Bottom){this.IsTop=0;clearInterval(SetIntervalChar);SetIntervalChar=null}
     }
-
   }
 }
 
@@ -133,19 +133,6 @@ var Footerimg2 = new Picture(Footerdiv2, 5, "imgs/ground.png")
 
 var Penguindiv = new Div(100,100,20,500,"characterdiv","character")
 var Penguinimg = new Character(Penguindiv, 5, "imgs/penguin.png", 200)
-
-Obsdiv.create()
-Obsimg.init()
-
-Footerdiv1.create()
-Footerimg1.init()
-
-Footerdiv2.create()
-Footerimg2.init()
-
-Penguindiv.create()
-Penguinimg.init()
-
 
 
 let SetInterval=null
