@@ -98,10 +98,10 @@ class Obstacle extends Picture{
     super(div1, velocity1, ilink1)
   }
 
-  move(Char1){
+  move(Char1, i){
     let CurrentDivMove = document.getElementById(this.Div.Id)
     this.Posistion.X += this.Velocity
-    if(this.Posistion.X>=CurrentDivMove.parentElement.offsetWidth){this.Posistion.X=this.Origin.X}
+    if(this.Posistion.X>=CurrentDivMove.parentElement.offsetWidth){this.Posistion.X=-(testimg[2].Posistion.X+100)}
     CurrentDivMove.style.right = `${this.Posistion.X}px`
     
     if ( (Char1.Posistion.Y + Char1.Div.Height) >= this.Posistion.Y &&
@@ -118,9 +118,6 @@ class Obstacle extends Picture{
         location.reload();
       }
     }
-
-
-
   }
 }
 
@@ -153,21 +150,23 @@ class Character extends Picture{
 function getRandomInt(min, max) {
   min = Math.ceil(min)
   max = Math.floor(max)
-  return Math.floor(Math.random() * (max - min)) + min
+  return Math.floor(Math.random() * (max - min + 1)) + min
 }
 
 function CreatingRandom(MinDimention, MaxDimention, bottom, MinRight, MaxRight){
   var DivList = []
   var ImgList = []
   var RandRightIntOld = 0
-  for(var i=0; i<6;i++){
-    var RandDimInt = getRandomInt(MinDimention,MaxDimention)
-    var RandRightInt = getRandomInt(MinRight,MaxRight)+MinRight
-    DivList[i] = new Div(RandDimInt, RandDimInt, bottom, -(RandRightIntOld+RandRightInt), `obsdivvvv${i}`, "obs")
-    ImgList[i] = new Obstacle(DivList[i], 5 , "imgs/obs.png")
-    console.log(-(RandRightIntOld+RandRightInt))
+  for(var i=0; i<3;i++){
+    var RandWidthInt = getRandomInt(MinDimention,MaxDimention)
+    var RandHeightInt = getRandomInt(MinDimention*1.5,MaxDimention*1.5)
+    var RandRightInt = getRandomInt(0,1)
+    RandRightInt = RandRightInt==0 ? MinRight : MaxRight
+    RandRightIntOld = i==2 ? 760 : RandRightIntOld+RandRightInt
+    DivList[i] = new Div(RandWidthInt, RandHeightInt, bottom, -(RandRightIntOld), `obsdivvvv${i}`, "obs")
+    ImgList[i] = new Obstacle(DivList[i], 5 , "imgs/cactus.png")
+    console.log(RandRightIntOld)
 
-    RandRightIntOld += RandRightInt
 
   }
 
@@ -175,8 +174,16 @@ function CreatingRandom(MinDimention, MaxDimention, bottom, MinRight, MaxRight){
 }
 
 
-var [testdiv, testimg] = CreatingRandom(40,80,35,100,200)
+var [testdiv, testimg] = CreatingRandom(30,50,45,20,300)
 
+
+var createrandompos = (min, max) => {
+  var RandRightInt = getRandomInt(min,max)
+
+
+}
+
+// createrandompos()
 // var Obsdiv = new Div(100,100,35,-100,"obsdivvvv","obs")
 // var Obsimg = new Obstacle(Obsdiv, 5, "imgs/obs.png")
 
@@ -206,7 +213,7 @@ document.addEventListener("keydown", function(e){
       Footerimg1.move()
       Footerimg2.move()
       // Obsimg.move()
-      for (i in testimg) {testimg[i].move(Penguinimg)}
+      for (i in testimg) {testimg[i].move(Penguinimg, i)}
     },16)
   }
 })
