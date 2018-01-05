@@ -86,9 +86,9 @@ class Picture{
 
   move(){
     let CurrentDivMove = document.getElementById(this.Div.Id)
-    CurrentDivMove.style.right = `${this.Posistion.X}px`
     this.Posistion.X += this.Velocity
     if(this.Posistion.X>=CurrentDivMove.parentElement.offsetWidth){this.Posistion.X=-this.Div.Width}
+    CurrentDivMove.style.right = `${this.Posistion.X}px`
   }
 }
 
@@ -97,12 +97,30 @@ class Obstacle extends Picture{
   constructor(div1, velocity1=5, ilink1=null){
     super(div1, velocity1, ilink1)
   }
-    // To override move() with collision detection
-  move(){
+
+  move(Char1){
     let CurrentDivMove = document.getElementById(this.Div.Id)
-    CurrentDivMove.style.right = `${this.Posistion.X}px`
     this.Posistion.X += this.Velocity
     if(this.Posistion.X>=CurrentDivMove.parentElement.offsetWidth){this.Posistion.X=this.Origin.X}
+    CurrentDivMove.style.right = `${this.Posistion.X}px`
+    
+    if ( (Char1.Posistion.Y + Char1.Div.Height) >= this.Posistion.Y &&
+       (Char1.Posistion.Y <= (this.Posistion.Y + this.Div.Height) ) &&
+       (this.Posistion.X + this.Div.Width) >= (Char1.Posistion.X) &&
+       (this.Posistion.X <= (Char1.Posistion.X + Char1.Div.Width)) )
+    {
+
+      if (!0)
+        {alert("Game Over")
+          location.reload();}
+      else{
+        alert("you still have lives, hurry up :D")
+        location.reload();
+      }
+    }
+
+
+
   }
 }
 
@@ -116,7 +134,7 @@ class Character extends Picture{
   move(){
 
     let CurrentDivMove = document.getElementById(this.Div.Id)
-    CurrentDivMove.style.bottom = `${this.Posistion.Y}px`
+
     if (this.Posistion.Y<this.Jump && !this.IsTop) {
       this.Posistion.Y+=this.Velocity
       if(this.Posistion.Y==this.Jump){this.IsTop=1}
@@ -125,6 +143,8 @@ class Character extends Picture{
       this.Posistion.Y -= this.Velocity
       if(this.Posistion.Y==this.Div.Bottom){this.IsTop=0;clearInterval(SetIntervalChar);SetIntervalChar=null}
     }
+    CurrentDivMove.style.bottom = `${this.Posistion.Y}px`
+
   }
 }
 
@@ -144,7 +164,7 @@ function CreatingRandom(MinDimention, MaxDimention, bottom, MinRight, MaxRight){
     var RandDimInt = getRandomInt(MinDimention,MaxDimention)
     var RandRightInt = getRandomInt(MinRight,MaxRight)+MinRight
     DivList[i] = new Div(RandDimInt, RandDimInt, bottom, -(RandRightIntOld+RandRightInt), `obsdivvvv${i}`, "obs")
-    ImgList[i] = new Obstacle(DivList[i], 2 , "imgs/obs.png")
+    ImgList[i] = new Obstacle(DivList[i], 5 , "imgs/obs.png")
     console.log(-(RandRightIntOld+RandRightInt))
 
     RandRightIntOld += RandRightInt
@@ -161,14 +181,14 @@ var [testdiv, testimg] = CreatingRandom(40,80,35,100,200)
 // var Obsimg = new Obstacle(Obsdiv, 5, "imgs/obs.png")
 
 var Footerdiv1 = new Div(760,70,0,0,"footerdiv1","footer")
-var Footerimg1 = new Picture(Footerdiv1, 2, "imgs/ground.png")
+var Footerimg1 = new Picture(Footerdiv1, 5, "imgs/ground.png")
 
 var Footerdiv2 = new Div(760,70,0,-760,"footerdiv2","footer")
-var Footerimg2 = new Picture(Footerdiv2, 2, "imgs/ground.png")
+var Footerimg2 = new Picture(Footerdiv2, 5, "imgs/ground.png")
 
 
-var Penguindiv = new Div(100,100,20,500,"characterdiv","character")
-var Penguinimg = new Character(Penguindiv, 5, "imgs/penguin.png", 200)
+var Penguindiv = new Div(20,100,20,500,"characterdiv","character")
+var Penguinimg = new Character(Penguindiv, 5, "imgs/penguin.png", 170)
 
 
 let SetInterval=null
@@ -186,7 +206,7 @@ document.addEventListener("keydown", function(e){
       Footerimg1.move()
       Footerimg2.move()
       // Obsimg.move()
-      for (i in testimg) {testimg[i].move()}
+      for (i in testimg) {testimg[i].move(Penguinimg)}
     },16)
   }
 })
