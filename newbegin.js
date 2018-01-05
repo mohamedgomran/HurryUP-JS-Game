@@ -99,48 +99,52 @@ class Obstacle extends Picture{
 }
 
 class Character extends Picture{
-  constructor(div1, velocity1=5, ilink1=null){
+  constructor(div1, velocity1=5, ilink1=null, jump1){
     super(div1, velocity1, ilink1)
-    this.IsTop=0
+    this.Jump = jump1
+    this.IsTop = 0
   }
 
   move(){
 
     let CurrentDivMove = document.getElementById(this.Div.Id)
     CurrentDivMove.style.bottom = `${this.Posistion.Y}px`
-    if (this.Posistion.Y<200 && !this.IsTop) {
+    if (this.Posistion.Y<this.Jump && !this.IsTop) {
       this.Posistion.Y+=this.Velocity
-      if(this.Posistion.Y==200){this.IsTop=1}
+      if(this.Posistion.Y==this.Jump){this.IsTop=1}
     }
-    else if (this.Posistion.Y>20) {
+    else if (this.Posistion.Y>this.Div.Bottom) {
       this.Posistion.Y -= this.Velocity
-      if(this.Posistion.Y==20){this.IsTop=0;clearInterval(SetIntervalChar);SetIntervalChar=null}
+      if(this.Posistion.Y==this.Div.Bottom){this.IsTop=0;clearInterval(SetIntervalChar);SetIntervalChar=null}
     }
 
   }
 }
 
-var xx = new Div(100,100,35,-100,"obsdivvvv","obs")
-var yy = new Picture(xx, 5, "imgs/obs.png")
+var Obsdiv = new Div(100,100,35,-100,"obsdivvvv","obs")
+var Obsimg = new Picture(Obsdiv, 5, "imgs/obs.png")
 
-var xxx = new Div(760,70,0,0,"footerdiv1","footer")
-var yyy = new Picture(xxx, 5, "imgs/ground.png")
+var Footerdiv1 = new Div(760,70,0,0,"footerdiv1","footer")
+var Footerimg1 = new Picture(Footerdiv1, 5, "imgs/ground.png")
 
-var xxxx = new Div(760,70,0,-760,"footerdiv2","footer")
-var yyyy = new Picture(xxxx, 5, "imgs/ground.png")
+var Footerdiv2 = new Div(760,70,0,-760,"footerdiv2","footer")
+var Footerimg2 = new Picture(Footerdiv2, 5, "imgs/ground.png")
 
 
-var xxxxx = new Div(100,100,20,500,"characterdiv","character")
-var yyyyy = new Character(xxxxx, 5, "imgs/penguin.png")
+var Penguindiv = new Div(100,100,20,500,"characterdiv","character")
+var Penguinimg = new Character(Penguindiv, 5, "imgs/penguin.png", 200)
 
-xx.create()
-yy.init()
-xxx.create()
-yyy.init()
-xxxx.create()
-yyyy.init()
-xxxxx.create()
-yyyyy.init()
+Obsdiv.create()
+Obsimg.init()
+
+Footerdiv1.create()
+Footerimg1.init()
+
+Footerdiv2.create()
+Footerimg2.init()
+
+Penguindiv.create()
+Penguinimg.init()
 
 
 
@@ -150,15 +154,15 @@ document.addEventListener("keydown", function(e){
   
   if(SetIntervalChar===null){
     SetIntervalChar = setInterval(function(){
-      if(e.keyCode==32){yyyyy.move()}
+      if(e.keyCode==32){Penguinimg.move()}
     },16)
   }
 
   if(SetInterval===null){
     SetInterval = setInterval(function(){
-      yy.move()
-      yyy.move()
-      yyyy.move()
+      Footerimg1.move()
+      Footerimg2.move()
+      Obsimg.move()
     },16)
   }
 })
