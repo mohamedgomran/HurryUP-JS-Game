@@ -30,16 +30,15 @@
 // document.addEventListener("click", RemoveInterval)
 
 
-var score=0;
-document.getElementById('demo').innerHTML = score;
 
+//**********************************************************************
 class Pos {
   constructor(x1=0,y1=0){
     this.X = x1
     this.Y = y1
   }
 }
-
+//**********************************************************************
 
 class Div{
   constructor(width1, height1, bottom1, right1, id1, class1){
@@ -69,7 +68,7 @@ class Div{
   }
 
 }
-
+//**********************************************************************
 class Picture{
   constructor(div1, velocity1=5, ilink1=null){
     this.Origin = new Pos(div1.Right,div1.Bottom)
@@ -99,51 +98,29 @@ class Picture{
 
 
 //*********************************************
+
+
+
+//*********************************************
 class coin extends Picture{
   constructor(div,velocity=0,ilink=null){
       super(div,velocity,ilink)
   }
 
- move(player){  //move(xplayer,yplayer)
+ move(player){ 
 
     let CurrentDivMove = document.getElementById(this.Div.Id)
     CurrentDivMove.style.right = `${this.Posistion.X}px`
-    //this.Posistion.X += 5
-
-   //if(this.Posistion.X===player.Posistion.X && this.Posistion.Y === player.Posistion.Y )                 //if(this.Posistion.X===player.Posistion.X && this.Posistion.Y === player.Posistion.Y )
+    
        if ( (player.Posistion.Y + player.Div.Height) >= this.Posistion.Y &&
        (player.Posistion.Y <= (this.Posistion.Y + this.Div.Height) ) &&
        (this.Posistion.X + this.Div.Width) >= (player.Posistion.X) &&
        (this.Posistion.X <= (player.Posistion.X + player.Div.Width)) )
       {
-        score++
-        document.getElementById('demo').innerHTML = score;
+        player.CoinCollected++
+        document.getElementById('demo').innerHTML = player.CoinCollected;
        
         this.Posistion.X=-this.Div.Width
-     /*
-         this.Div.width = 100
-          this.Div.height=100
-
-         if(this.Div.bottom == 300)
-         {
-          console.log( this.Div.bottom)
-          this.Div.bottom -= 100
-          this.Div.width = 10
-          this.Div.height=100
-          this.Div.id=this.Div.id
-          this.Div.class=this.Div.class
-          this.create()
-          console.log( this.Div.bottom)
-          this.init()
-
-         }else if (this.Div.bottom > 20) {
-           
-             this.Div.bottom += 50
-         } 
-         //this.Div.top=300
-         //this.Div.Y=300
-         //this.Posistion.Y +=20
-         */
 
       }else
        {
@@ -191,12 +168,17 @@ class Obstacle extends Picture{
     }
   }
 }
-
+//**********************************************************************
 class Character extends Picture{
-  constructor(div1, velocity1=5, ilink1=null, jump1=0){
+  constructor(div1, velocity1=5, ilink1=null, jump1=0,name='player'){
     super(div1, velocity1, ilink1)
     this.Jump = jump1
     this.IsTop = 0
+       
+       this.Name=name
+       this.Score = 0
+       this.Life =  3
+       this.CoinCollected = 0
   }
 
   move(){
@@ -214,10 +196,37 @@ class Character extends Picture{
     CurrentDivMove.style.bottom = `${this.Posistion.Y}px`
 
   }
+    
+    
+    life()
+    {
+        //write code of life and high score and levels
+        if(this.life == 0)
+            {
+             // print Game over   
+            }
+        
+    }
+    
+    
+    
 }
 
+//**********************************************************************
+/*
+class player {
+   constructor(name='player'){
+       this.Name=name
+       this.Score = 0
+       this.Life =  3
+       this.CoinCollected = 0
+
+  }
+    
+}*/
 
 
+//**********************************************************************
 function getRandomInt(min, max) {
   min = Math.ceil(min)
   max = Math.floor(max)
@@ -254,6 +263,7 @@ var createrandompos = (min, max) => {
 
 }
 
+
 // createrandompos()
  //var Obsdiv = new Div(100,100,35,-100,"obsdivvvv","obs")
  //var Obsimg = new Obstacle(Obsdiv, 5, "imgs/obs.png")
@@ -266,47 +276,55 @@ var Footerimg2 = new Picture(Footerdiv2, 5, "imgs/ground.png")
 
 
 var Penguindiv = new Div(20,100,20,500,"characterdiv","character")
-var Penguinimg = new Character(Penguindiv, 5, "imgs/penguin.png", 170)
+var Penguinimg = new Character(Penguindiv, 5, "imgs/penguin.png", 170,'Abdo')
 
- 
 
           var dcoin=new Div(40,40,20,-100,"coin","coindiv")
-          var coin1=new coin(dcoin,5,"imgs/co.png")
+          var coin1=new coin(dcoin,5,"imgs/co.jpg")
           dcoin.create()
           coin1.init()
 
           var dcoin2=new Div(40,40,100,-100,"coin2","coindiv")
-          var coin2=new coin(dcoin2,5,"imgs/co.png")
+          var coin2=new coin(dcoin2,5,"imgs/co.jpg")
           dcoin2.create()
           coin2.init()
 
         var dcoin3=new Div(40,40,170,-100,"coin3","coindiv")
-        var coin3=new coin(dcoin3,5,"imgs/co.png")
+        var coin3=new coin(dcoin3,5,"imgs/co.jpg")
         dcoin3.create()
         coin3.init()
 
 
 
         var dcoin4=new Div(40,40,250,-100,"coin4","coindiv")
-        var coin4=new coin(dcoin4,5,"imgs/co.png")
+        var coin4=new coin(dcoin4,5,"imgs/co.jpg")
         dcoin4.create()
         coin4.init()
 
 
          var dcoin5=new Div(40,40,300,-100,"coin5","coindiv")
-        var coin5=new coin(dcoin5,5,"imgs/co.png")
+        var coin5=new coin(dcoin5,5,"imgs/co.jpg")
         dcoin5.create()
         coin5.init()
 
+// onstart
+
+
+
+document.getElementById('demo').innerHTML = Penguinimg.CoinCollected;
+document.getElementById('pname').innerHTML = Penguinimg.Name;
+
+//*******************************************************
 
 
 let SetInterval=null
 let SetIntervalChar=null
 document.addEventListener("keydown", function(e){
   
+    
   if(SetIntervalChar===null){
     SetIntervalChar = setInterval(function(){
-      if(e.keyCode==32){Penguinimg.move()}
+      if(e.keyCode==13){Penguinimg.move()}
     },16)
   }
 
