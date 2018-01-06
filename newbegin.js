@@ -30,57 +30,9 @@
 // document.addEventListener("click", RemoveInterval)
 
 
-
-/*
-
-
-
-
-if (rect1.x < rect2.x + rect2.width &&
-   rect1.x + rect1.width > rect2.x &&
-   rect1.y < rect2.y + rect2.height &&
-   rect1.height + rect1.y > rect2.y) {
-    // collision detected!
-}
-
-
-move_coin()
-{
-  
-     //*************************
-  var coinposition = 0;
- 
-  var id=setInterval(collision(),this.velocity)
-
-  var main_width=document.getElementById("main").width ;
-
- function collision()
-         {
-
-          console.log(coinposition);
-          if(this.Posistion.X === player.position.x)//  if(this.coinposition == innerWidth-playerposition-this.width ) -main_width -100-this.width
-          {
-            clearInterval(id)
-            score++;
-            coinposition++;
-          id=setInterval(collision,this.velocity)
-          }else 
-            {
-               coinposition++;
-               this.Div.right = coinposition;
-              }
-
-          }
-        
-}
-*/
-
-
-
 var score=0;
 document.getElementById('demo').innerHTML = score;
-//var container=document.getElementById('main')
- 
+
 class Pos {
   constructor(x1=0,y1=0){
     this.X = x1
@@ -97,6 +49,7 @@ class Div{
     this.Right = right1
     this.Id = id1
     this.Class=class1
+    this.create()
   }
 
   create(){
@@ -107,7 +60,6 @@ class Div{
     CreatedDiv.style.height = `${this.Height}px`
     CreatedDiv.style.bottom = `${this.Bottom}px`
     CreatedDiv.style.right = `${this.Right}px`
-    CreatedDiv.style.zIndex = this.ZIndex
     CreatedDiv.style.position = "absolute"
 
     CreatedDiv.id = this.Id
@@ -119,11 +71,13 @@ class Div{
 }
 
 class Picture{
-  constructor(div1, velocity1=0, ilink1=null){
+  constructor(div1, velocity1=5, ilink1=null){
+    this.Origin = new Pos(div1.Right,div1.Bottom)
     this.Posistion = new Pos(div1.Right,div1.Bottom)
     this.ImgLink = ilink1
     this.Velocity = velocity1
     this.Div = div1
+    this.init()
   }
 
   init(){
@@ -135,38 +89,16 @@ class Picture{
   }
 
   move(){
-
     let CurrentDivMove = document.getElementById(this.Div.Id)
+    this.Posistion.X += this.Velocity
+    if(this.Posistion.X>=CurrentDivMove.parentElement.offsetWidth){this.Posistion.X=-this.Div.Width}
     CurrentDivMove.style.right = `${this.Posistion.X}px`
-    this.Posistion.X += 5
-    if(this.Posistion.X===CurrentDivMove.parentElement.offsetWidth){this.Posistion.X=-this.Div.Width}
   }
 }
 
 
-class Character extends Picture{
-  constructor(div1, velocity1=0, ilink1=null){
-    super(div1, velocity1, ilink1)
-    this.IsTop=0
-  }
 
-  move(){
-
-    let CurrentDivMove = document.getElementById(this.Div.Id)
-    CurrentDivMove.style.bottom = `${this.Posistion.Y}px`
-    if (this.Posistion.Y<200 && !this.IsTop) {
-      this.Posistion.Y+=this.Velocity
-      if(this.Posistion.Y==200){this.IsTop=1}
-    }
-    else if (this.Posistion.Y>20) {
-      this.Posistion.Y -= this.Velocity
-      if(this.Posistion.Y==20){this.IsTop=0;clearInterval(SetIntervalChar);SetIntervalChar=null}
-    }
-
-  }
-}
-
-
+//*********************************************
 class coin extends Picture{
   constructor(div,velocity=0,ilink=null){
       super(div,velocity,ilink)
@@ -230,31 +162,113 @@ class coin extends Picture{
 
 }
 
+//*********************************************
+
+class Obstacle extends Picture{
+  constructor(div1, velocity1=5, ilink1=null){
+    super(div1, velocity1, ilink1)
+  }
+
+  move(Char1, i){
+    let CurrentDivMove = document.getElementById(this.Div.Id)
+    this.Posistion.X += this.Velocity
+    if(this.Posistion.X>=CurrentDivMove.parentElement.offsetWidth){this.Posistion.X=-(testimg[2].Posistion.X+100)}
+    CurrentDivMove.style.right = `${this.Posistion.X}px`
+    
+    if ( (Char1.Posistion.Y + Char1.Div.Height) >= this.Posistion.Y &&
+       (Char1.Posistion.Y <= (this.Posistion.Y + this.Div.Height) ) &&
+       (this.Posistion.X + this.Div.Width) >= (Char1.Posistion.X) &&
+       (this.Posistion.X <= (Char1.Posistion.X + Char1.Div.Width)) )
+    {
+
+      if (!0)
+        {alert("Game Over")
+          location.reload();}
+      else{
+        alert("you still have lives, hurry up :D")
+        location.reload();
+      }
+    }
+  }
+}
+
+class Character extends Picture{
+  constructor(div1, velocity1=5, ilink1=null, jump1=0){
+    super(div1, velocity1, ilink1)
+    this.Jump = jump1
+    this.IsTop = 0
+  }
+
+  move(){
+
+    let CurrentDivMove = document.getElementById(this.Div.Id)
+
+    if (this.Posistion.Y<this.Jump && !this.IsTop) {
+      this.Posistion.Y+=this.Velocity
+      if(this.Posistion.Y==this.Jump){this.IsTop=1}
+    }
+    else if (this.Posistion.Y>this.Div.Bottom) {
+      this.Posistion.Y -= this.Velocity
+      if(this.Posistion.Y==this.Div.Bottom){this.IsTop=0;clearInterval(SetIntervalChar);SetIntervalChar=null}
+    }
+    CurrentDivMove.style.bottom = `${this.Posistion.Y}px`
+
+  }
+}
 
 
 
+function getRandomInt(min, max) {
+  min = Math.ceil(min)
+  max = Math.floor(max)
+  return Math.floor(Math.random() * (max - min + 1)) + min
+}
 
-var xx = new Div(100,100,35,-100,"obsdivvvv","obs")
-var yy = new Picture(xx, 5, "imgs/obs.png")
+function CreatingRandom(MinDimention, MaxDimention, bottom, MinRight, MaxRight){
+  var DivList = []
+  var ImgList = []
+  var RandRightIntOld = 0
+  for(var i=0; i<3;i++){
+    var RandWidthInt = getRandomInt(MinDimention,MaxDimention)
+    var RandHeightInt = getRandomInt(MinDimention*1.5,MaxDimention*1.5)
+    var RandRightInt = getRandomInt(0,1)
+    RandRightInt = RandRightInt==0 ? MinRight : MaxRight
+    RandRightIntOld = i==2 ? 760 : RandRightIntOld+RandRightInt
+    DivList[i] = new Div(RandWidthInt, RandHeightInt, bottom, -(RandRightIntOld), `obsdivvvv${i}`, "obs")
+    ImgList[i] = new Obstacle(DivList[i], 5 , "imgs/obs.png")
+    console.log(RandRightIntOld)
 
-var xxx = new Div(760,70,0,0,"footerdiv1","footer")
-var yyy = new Picture(xxx, 5, "imgs/ground.png")
 
-var xxxx = new Div(760,70,0,-760,"footerdiv2","footer")
-var yyyy = new Picture(xxxx, 5, "imgs/ground.png")
+  }
 
-
-var xxxxx = new Div(100,100,20,500,"characterdiv","character")
-var yyyyy = new Character(xxxxx, 5, "imgs/penguin.png")
+  return [DivList,ImgList]
+}
 
 
+var [testdiv, testimg] = CreatingRandom(30,50,45,20,300)
 
 
-          var playerposition_x=yyyyy.Posistion.X;
-          var playerposition_y=yyyyy.Posistion.Y;
-          //console.log(playerposition_y,'player y')
-          console.log(yyyyy.Div.Width )
+var createrandompos = (min, max) => {
+  var RandRightInt = getRandomInt(min,max)
 
+
+}
+
+// createrandompos()
+ //var Obsdiv = new Div(100,100,35,-100,"obsdivvvv","obs")
+ //var Obsimg = new Obstacle(Obsdiv, 5, "imgs/obs.png")
+
+var Footerdiv1 = new Div(760,70,0,0,"footerdiv1","footer")
+var Footerimg1 = new Picture(Footerdiv1, 5, "imgs/ground.png")
+
+var Footerdiv2 = new Div(760,70,0,-760,"footerdiv2","footer")
+var Footerimg2 = new Picture(Footerdiv2, 5, "imgs/ground.png")
+
+
+var Penguindiv = new Div(20,100,20,500,"characterdiv","character")
+var Penguinimg = new Character(Penguindiv, 5, "imgs/penguin.png", 170)
+
+ 
 
           var dcoin=new Div(40,40,20,-100,"coin","coindiv")
           var coin1=new coin(dcoin,5,"imgs/co.png")
@@ -286,52 +300,28 @@ var yyyyy = new Character(xxxxx, 5, "imgs/penguin.png")
 
 
 
-xx.create()
-yy.init()
-xxx.create()
-yyy.init()
-xxxx.create()
-yyyy.init()
-xxxxx.create()
-yyyyy.init()
-
-
-
-
 let SetInterval=null
 let SetIntervalChar=null
 document.addEventListener("keydown", function(e){
   
   if(SetIntervalChar===null){
     SetIntervalChar = setInterval(function(){
-      if(e.keyCode==13){yyyyy.move()}
-    },16)   
+      if(e.keyCode==32){Penguinimg.move()}
+    },16)
   }
 
   if(SetInterval===null){
     SetInterval = setInterval(function(){
-      yy.move()
-      yyy.move()
-      yyyy.move()
-      coin1.move(yyyyy)  // coin1.move(playerposition_x ,playerposition_y )
-      coin2.move(yyyyy)
-       coin3.move(yyyyy)
-       coin4.move(yyyyy)
-       coin5.move(yyyyy)
+          Footerimg1.move()
+          Footerimg2.move()
+          coin1.move(Penguinimg)  // coin1.move(playerposition_x ,playerposition_y )
+          coin2.move(Penguinimg)
+           coin3.move(Penguinimg)
+           coin4.move(Penguinimg)
+           coin5.move(Penguinimg)
+          // Obsimg.move()
+        for (i in testimg) {testimg[i].move(Penguinimg, i)}
     },16)
-
-
-
-    //coin1.move_coin()
   }
-}
-
-
-
-
-
-)
-
-
-
+})
 
