@@ -188,9 +188,30 @@ class coin extends Picture{
         document.getElementById('demo').innerHTML = score;
        
         this.Posistion.X=-this.Div.Width
+     /*
+         this.Div.width = 100
+          this.Div.height=100
+
+         if(this.Div.bottom == 300)
+         {
+          console.log( this.Div.bottom)
+          this.Div.bottom -= 100
+          this.Div.width = 10
+          this.Div.height=100
+          this.Div.id=this.Div.id
+          this.Div.class=this.Div.class
+          this.create()
+          console.log( this.Div.bottom)
+          this.init()
+
+         }else if (this.Div.bottom > 20) {
+           
+             this.Div.bottom += 50
+         } 
          //this.Div.top=300
          //this.Div.Y=300
          //this.Posistion.Y +=20
+         */
 
       }else
        {
@@ -202,7 +223,7 @@ class coin extends Picture{
      
       }
 
-
+    
 
   }
 
@@ -227,30 +248,42 @@ var xxxxx = new Div(100,100,20,500,"characterdiv","character")
 var yyyyy = new Character(xxxxx, 5, "imgs/penguin.png")
 
 
- 
 
 
+          var playerposition_x=yyyyy.Posistion.X;
+          var playerposition_y=yyyyy.Posistion.Y;
+          //console.log(playerposition_y,'player y')
+          console.log(yyyyy.Div.Width )
 
-var playerposition_x=yyyyy.Posistion.X;
-var playerposition_y=yyyyy.Posistion.Y;
-//console.log(playerposition_y,'player y')
-console.log(yyyyy.Div.Width )
 
+          var dcoin=new Div(40,40,20,-100,"coin","coindiv")
+          var coin1=new coin(dcoin,5,"imgs/co.png")
+          dcoin.create()
+          coin1.init()
 
-var dcoin=new Div(40,40,200,-100,"coin","coindiv")
-var coin1=new coin(dcoin,5,"imgs/co.png")
-dcoin.create()
-coin1.init()
+          var dcoin2=new Div(40,40,100,-100,"coin2","coindiv")
+          var coin2=new coin(dcoin2,5,"imgs/co.png")
+          dcoin2.create()
+          coin2.init()
 
-var dcoin2=new Div(40,40,10,-100,"coin2","coindiv")
-var coin2=new coin(dcoin2,5,"imgs/co.png")
-dcoin2.create()
-coin2.init()
-
-        var dcoin3=new Div(40,40,350,-100,"coin3","coindiv")
+        var dcoin3=new Div(40,40,170,-100,"coin3","coindiv")
         var coin3=new coin(dcoin3,5,"imgs/co.png")
         dcoin3.create()
         coin3.init()
+
+
+
+        var dcoin4=new Div(40,40,250,-100,"coin4","coindiv")
+        var coin4=new coin(dcoin4,5,"imgs/co.png")
+        dcoin4.create()
+        coin4.init()
+
+
+         var dcoin5=new Div(40,40,300,-100,"coin5","coindiv")
+        var coin5=new coin(dcoin5,5,"imgs/co.png")
+        dcoin5.create()
+        coin5.init()
+
 
 
 xx.create()
@@ -283,6 +316,8 @@ document.addEventListener("keydown", function(e){
       coin1.move(yyyyy)  // coin1.move(playerposition_x ,playerposition_y )
       coin2.move(yyyyy)
        coin3.move(yyyyy)
+       coin4.move(yyyyy)
+       coin5.move(yyyyy)
     },16)
 
 
