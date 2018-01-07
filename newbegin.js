@@ -1,3 +1,32 @@
+////////////////////////////////// getting that gets player parameters/////////////////////
+var charType
+var playerName
+
+if (location.search.substring(1)==="") 
+{
+  charType="penguin"
+  playerName="Player1"
+}
+else
+{
+  charType=location.search.substring(1).split("&")[0].split("=")[1]
+  playerName=location.search.substring(1).split("&")[1].split("=")[1]
+}
+
+////////////////////////////////////////////////////////////////////////////////////////////
+
+/////////////////////////////////changing the header dynamically////////////////////////////
+var player=document.getElementById("player")
+var level=document.getElementById("level")
+var lives=document.getElementById("lives")
+var coins=document.getElementById("coins")
+var score=document.getElementById("score")
+
+player.innerHTML=playerName
+
+////////////////////////////////////////////////////////////////////////////////////////////
+
+
 class Pos {
   constructor(x1=0,y1=0){
     this.X = x1
@@ -67,6 +96,7 @@ class Obstacle extends Picture{
   }
 
   move(Char1, i){
+    score.innerHTML="X"+ Char1.Score++  ////////////// modification
     let CurrentDivMove = document.getElementById(this.Div.Id)
     this.Posistion.X += this.Velocity
     poslist[i] = this.Posistion.X
@@ -93,6 +123,7 @@ class Obstacle extends Picture{
       else{
         alert("you still have lives, hurry up :D")
         Char1.Life--
+        lives.innerHTML="X"+Char1.Life
         location.reload();
       }
     }
@@ -101,7 +132,6 @@ class Obstacle extends Picture{
 
 
 class Coin extends Obstacle{
- 
 
   move(Char1, i){ 
 
@@ -118,7 +148,10 @@ class Coin extends Obstacle{
 
       if(this.Posistion.X>=CurrentDivMove.parentElement.offsetWidth){}
       
-      else{Char1.CoinCollected++}
+      else{
+            Char1.CoinCollected++;
+            coins.innerHTML="X"+Char1.CoinCollected;   ///modification
+          }
       var NewRightPos = CreatingRandomPos(30,500)
       var NewBottom = CreatingRandomPos(45,250)
       var [NewWidth, NewHeight] = CreatingRandomDim(30,30)
@@ -140,6 +173,7 @@ class Character extends Picture{
     this.IsTop = 0
     this.CoinCollected = 0
     this.Life = life1
+    this.Score = 0
   }
 
   move(){
@@ -207,8 +241,6 @@ function CreatingRandom(MinDimention, MaxDimention, MinBottom, MaxBottom, MinRig
 }
 
 
-
-
 var [testdiv, testimg, poslist] = CreatingRandom(30,50,45,45,300,500, 3, "imgs/obs.png", "obsdivvvv", "obs")
 
 var [CoinDiv, CoinImg, CoinPosList] = CreatingRandom(30,30,45,250,30,500, 5, "imgs/coin.png", "coindiv", "coin")
@@ -225,18 +257,28 @@ var Footerdiv2 = new Div(760,70,0,-760,"footerdiv2","footer")
 var Footerimg2 = new Picture(Footerdiv2, 5, "imgs/ground.png")
 
 
-var Penguindiv = new Div(20,100,20,500,"characterdiv","character")
-var Penguinimg = new Character(Penguindiv, 5, "imgs/penguin.png", 170)
+var CharacterDiv = new Div(20,100,20,500,"CharacterDiv","character")
 
+/////////////////////////////////////////generate a characater according to user input/////////
+if (charType==="penguin") 
+  {var CharacterImg = new Character(CharacterDiv, 5, "imgs/penguin.png", 170)} 
+else 
+  {var CharacterImg = new Character(CharacterDiv, 5, "imgs/cat.gif", 170)}
+
+
+///////////////////////////////////////////////////////////////////////////////////////////////
 
 let SetInterval=null
 let SetIntervalChar=null
 document.addEventListener("keydown", function(e){
   
   if(SetIntervalChar===null){
-    SetIntervalChar = setInterval(function(){
-      if(e.keyCode==32){Penguinimg.move()}
-    },16)
+     if(e.keyCode==32){
+      SetIntervalChar = setInterval(function(){
+      CharacterImg.move()
+      },16)
+    }
+    
   }
 
   if(SetInterval===null){
@@ -244,8 +286,8 @@ document.addEventListener("keydown", function(e){
       Footerimg1.move()
       Footerimg2.move()
       // Obsimg.move()
-      for (i in testimg) {testimg[i].move(Penguinimg, i)}
-      for (j in CoinImg) {CoinImg[j].move(Penguinimg, j)}
+      for (i in testimg) {testimg[i].move(CharacterImg, i)}
+      for (j in CoinImg) {CoinImg[j].move(CharacterImg, j)}
 
     },16)
   }
