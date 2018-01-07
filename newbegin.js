@@ -1,33 +1,31 @@
+////////////////////////////////// getting that gets player parameters/////////////////////
+var charType
+var playerName
 
-// var foot1 = document.getElementById("footerdiv1")
-// var foot2 = document.getElementById("footerdiv2")
-// var obs = document.getElementById("obsdiv")
+if (location.search.substring(1)==="") 
+{
+  charType="penguin"
+  playerName="Player1"
+}
+else
+{
+  charType=location.search.substring(1).split("&")[0].split("=")[1]
+  playerName=location.search.substring(1).split("&")[1].split("=")[1]
+}
 
-// var x1=0
-// var x2=-750
-// var o1=-100
+////////////////////////////////////////////////////////////////////////////////////////////
 
-// var move  = function () {
-//   foot1.style.right = `${x1}px`
-//   foot2.style.right = `${x2}px`
-//   obs.style.right = `${o1}px`
+/////////////////////////////////changing the header dynamically////////////////////////////
+var player=document.getElementById("player")
+var level=document.getElementById("level")
+var lives=document.getElementById("lives")
+var coins=document.getElementById("coins")
+var score=document.getElementById("score")
 
-//   x1+=5
-//   x2+=5
-//   o1+=5
-//   if(x1 === 750){x1=-750}
-//   if(x2 === 750){x2=-750}
-// }
+player.innerHTML=playerName
 
-// var Moving = setInterval(move,16)
+////////////////////////////////////////////////////////////////////////////////////////////
 
-// var moving=null
-// var SetInterval = function () {
-//   if (moving===null) {moving = setInterval(move,20)}}
-// var RemoveInterval = function(){clearInterval(moving);moving=null}
-
-// document.addEventListener("keydown", SetInterval)
-// document.addEventListener("click", RemoveInterval)
 
 class Pos {
   constructor(x1=0,y1=0){
@@ -68,7 +66,6 @@ class Div{
 
 class Picture{
   constructor(div1, velocity1=5, ilink1=null){
-    this.Origin = new Pos(div1.Right,div1.Bottom)
     this.Posistion = new Pos(div1.Right,div1.Bottom)
     this.ImgLink = ilink1
     this.Velocity = velocity1
@@ -99,33 +96,85 @@ class Obstacle extends Picture{
   }
 
   move(Char1, i){
+    score.innerHTML="X "+ Char1.Score++  ////////////// modification
     let CurrentDivMove = document.getElementById(this.Div.Id)
     this.Posistion.X += this.Velocity
-    if(this.Posistion.X>=CurrentDivMove.parentElement.offsetWidth){this.Posistion.X=-(testimg[2].Posistion.X+100)}
+    poslist[i] = this.Posistion.X
     CurrentDivMove.style.right = `${this.Posistion.X}px`
+
+    if(this.Posistion.X>=CurrentDivMove.parentElement.offsetWidth){
+      var NewRightPos = CreatingRandomPos(300,500)
+      var [NewWidth, NewHeight] = CreatingRandomDim(30,50)
+      this.Posistion.X=-NewRightPos+Math.min(...poslist)
+      poslist[i] = this.Posistion.X
+      CurrentDivMove.style.width = NewWidth
+      CurrentDivMove.style.height = NewHeight
+    }
+
     
     if ( (Char1.Posistion.Y + Char1.Div.Height) >= this.Posistion.Y &&
        (Char1.Posistion.Y <= (this.Posistion.Y + this.Div.Height) ) &&
        (this.Posistion.X + this.Div.Width) >= (Char1.Posistion.X) &&
        (this.Posistion.X <= (Char1.Posistion.X + Char1.Div.Width)) )
     {
-
-      if (!0)
+      if (!Char1.Life)
         {alert("Game Over")
           location.reload();}
       else{
         alert("you still have lives, hurry up :D")
+        Char1.Life--
+        lives.innerHTML="X "+Char1.Life
         location.reload();
       }
     }
   }
 }
 
+
+class Coin extends Obstacle{
+ 
+
+  move(Char1, i){ 
+
+    let CurrentDivMove = document.getElementById(this.Div.Id)
+    this.Posistion.X += this.Velocity
+    CoinPosList[i] = this.Posistion.X
+    CurrentDivMove.style.right = `${this.Posistion.X}px`
+
+    if(this.Posistion.X>=CurrentDivMove.parentElement.offsetWidth || 
+       ((Char1.Posistion.Y + Char1.Div.Height) >= this.Posistion.Y &&
+       (Char1.Posistion.Y <= (this.Posistion.Y + this.Div.Height) ) &&
+       (this.Posistion.X + this.Div.Width) >= (Char1.Posistion.X) &&
+       (this.Posistion.X <= (Char1.Posistion.X + Char1.Div.Width)))) {
+
+      if(this.Posistion.X>=CurrentDivMove.parentElement.offsetWidth){}
+      
+      else{
+            Char1.CoinCollected++;
+            coins.innerHTML="X "+Char1.CoinCollected;   ///modification
+          }
+      var NewRightPos = CreatingRandomPos(30,500)
+      var NewBottom = CreatingRandomPos(45,250)
+      var [NewWidth, NewHeight] = CreatingRandomDim(30,30)
+      this.Posistion.X=-NewRightPos+Math.min(...CoinPosList)
+      CoinPosList[i] = this.Posistion.X
+      CurrentDivMove.style.width = NewWidth
+      CurrentDivMove.style.height = NewHeight
+      CurrentDivMove.style.bottom = NewBottom
+    }
+  }
+}
+
+
+
 class Character extends Picture{
-  constructor(div1, velocity1=5, ilink1=null, jump1=0){
+  constructor(div1, velocity1=5, ilink1=null, jump1=0, life1=3){
     super(div1, velocity1, ilink1)
     this.Jump = jump1
     this.IsTop = 0
+    this.CoinCollected = 0
+    this.Life = life1
+    this.Score = 0
   }
 
   move(){
@@ -153,66 +202,54 @@ function getRandomInt(min, max) {
   return Math.floor(Math.random() * (max - min + 1)) + min
 }
 
-function CreatingRandom(MinDimention, MaxDimention, bottom, MinRight, MaxRight){
+
+
+var CreatingRandomPos = (min, max) => {
+  var RandRightInt = getRandomInt(min,max)
+  return RandRightInt
+}
+
+var CreatingRandomDim = (min, max) => {
+  var RandWidthInt = getRandomInt(min, max)
+  var RandHeightInt = getRandomInt(min, max)
+  return [RandWidthInt, RandHeightInt]
+}
+
+
+
+
+function CreatingRandom(MinDimention, MaxDimention, MinBottom, MaxBottom, MinRight, MaxRight, num, ilink, id, class1){
   var DivList = []
   var ImgList = []
+  var PosList = []
   var RandRightIntOld = 0
-  for(var i=0; i<3;i++){
-    var RandWidthInt = getRandomInt(MinDimention,MaxDimention)
-    var RandHeightInt = getRandomInt(MinDimention*1.5,MaxDimention*1.5)
-    var RandRightInt = getRandomInt(0,1)
-    RandRightInt = RandRightInt==0 ? MinRight : MaxRight
-    RandRightIntOld = i==2 ? 760 : RandRightIntOld+RandRightInt
-    DivList[i] = new Div(RandWidthInt, RandHeightInt, bottom, -(RandRightIntOld), `obsdivvvv${i}`, "obs")
-    ImgList[i] = new Obstacle(DivList[i], 5 , "imgs/cactus.png")
-    console.log(RandRightIntOld)
-
-
+  for(var i=0; i<num;i++){
+    var [RandWidthInt,RandHeightInt]  = CreatingRandomDim(MinDimention,MaxDimention)
+    var RandRightInt = CreatingRandomPos(MinRight,MaxRight)
+    var BottomInt = CreatingRandomPos(MinBottom, MaxBottom)
+    RandRightIntOld+=RandRightInt
+    PosList[i] = -RandRightIntOld
+    DivList[i] = new Div(RandWidthInt, RandHeightInt, BottomInt, -(RandRightIntOld), `${id}${i}`, class1)
+    if (class1=="obs") {
+      ImgList[i] = new Obstacle(DivList[i], 5 , ilink)
+    }
+    else{
+      ImgList[i] = new Coin(DivList[i], 5 , ilink)
+    }
   }
 
-  return [DivList,ImgList]
+  return [DivList, ImgList, PosList]
 }
 
 
-var [testdiv, testimg] = CreatingRandom(30,50,45,20,300)
+var [testdiv, testimg, poslist] = CreatingRandom(30,50,45,45,300,500, 3, "imgs/obs.png", "obsdivvvv", "obs")
+
+var [CoinDiv, CoinImg, CoinPosList] = CreatingRandom(30,30,45,250,30,500, 5, "imgs/coin.png", "coindiv", "coin")
 
 
-var createrandompos = (min, max) => {
-  var RandRightInt = getRandomInt(min,max)
 
 
-}
 
-////////////////////////////////// getting that gets player parameters/////////////////////
-var charType
-var playerName
-
-if (location.search.substring(1)==="") 
-{
-	charType="penguin"
-	playerName="Player1"
-}
-else
-{
-	charType=location.search.substring(1).split("&")[0].split("=")[1]
-	playerName=location.search.substring(1).split("&")[1].split("=")[1]
-}
-
-////////////////////////////////////////////////////////////////////////////////////////////
-
-/////////////////////////////////changing the header dynamically////////////////////////////
-var player=document.getElementById("player")
-var level=document.getElementById("level")
-var lives=document.getElementById("lives")
-var coins=document.getElementById("coins")
-var score=document.getElementById("score")
-
-player.innerHTML=playerName
-
-////////////////////////////////////////////////////////////////////////////////////////////
-createrandompos()
-var Obsdiv = new Div(100,100,35,-100,"obsdivvvv","obs")
-var Obsimg = new Obstacle(Obsdiv, 5, "imgs/obs.png")
 
 var Footerdiv1 = new Div(760,70,0,0,"footerdiv1","footer")
 var Footerimg1 = new Picture(Footerdiv1, 5, "imgs/ground.png")
@@ -223,11 +260,14 @@ var Footerimg2 = new Picture(Footerdiv2, 5, "imgs/ground.png")
 
 var characterDiv = new Div(20,100,20,500,"characterdiv","character")
 
+/////////////////////////////////////////generate a characater according to user input/////////
 if (charType==="penguin") 
-	{var Penguinimg = new Character(characterDiv, 5, "imgs/penguin.png", 170)} 
+  {var Penguinimg = new Character(characterDiv, 5, "imgs/penguin.png", 170)} 
 else 
-	{var Penguinimg = new Character(characterDiv, 5, "imgs/cat.gif", 170)}
+  {var Penguinimg = new Character(characterDiv, 5, "imgs/cat.gif", 170)}
 
+
+///////////////////////////////////////////////////////////////////////////////////////////////
 
 let SetInterval=null
 let SetIntervalChar=null
@@ -245,6 +285,8 @@ document.addEventListener("keydown", function(e){
       Footerimg2.move()
       // Obsimg.move()
       for (i in testimg) {testimg[i].move(Penguinimg, i)}
+      for (j in CoinImg) {CoinImg[j].move(Penguinimg, j)}
+
     },16)
   }
 })
