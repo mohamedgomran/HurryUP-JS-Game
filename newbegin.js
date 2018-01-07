@@ -119,7 +119,7 @@ class Coin extends Obstacle{
       if(this.Posistion.X>=CurrentDivMove.parentElement.offsetWidth){}
       
       else{Char1.CoinCollected++}
-      var NewRightPos = CreatingRandomPos(30,300)
+      var NewRightPos = CreatingRandomPos(30,500)
       var NewBottom = CreatingRandomPos(45,250)
       var [NewWidth, NewHeight] = CreatingRandomDim(30,30)
       this.Posistion.X=-NewRightPos+Math.min(...CoinPosList)
@@ -211,7 +211,7 @@ function CreatingRandom(MinDimention, MaxDimention, MinBottom, MaxBottom, MinRig
 
 var [testdiv, testimg, poslist] = CreatingRandom(30,50,45,45,300,500, 3, "imgs/obs.png", "obsdivvvv", "obs")
 
-var [CoinDiv, CoinImg, CoinPosList] = CreatingRandom(30,30,45,250,30,300, 5, "imgs/coin.png", "coindiv", "coin")
+var [CoinDiv, CoinImg, CoinPosList] = CreatingRandom(30,30,45,250,30,500, 5, "imgs/coin.png", "coindiv", "coin")
 
 
 
