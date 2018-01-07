@@ -1,34 +1,3 @@
-
-// var foot1 = document.getElementById("footerdiv1")
-// var foot2 = document.getElementById("footerdiv2")
-// var obs = document.getElementById("obsdiv")
-
-// var x1=0
-// var x2=-750
-// var o1=-100
-
-// var move  = function () {
-//   foot1.style.right = `${x1}px`
-//   foot2.style.right = `${x2}px`
-//   obs.style.right = `${o1}px`
-
-//   x1+=5
-//   x2+=5
-//   o1+=5
-//   if(x1 === 750){x1=-750}
-//   if(x2 === 750){x2=-750}
-// }
-
-// var Moving = setInterval(move,16)
-
-// var moving=null
-// var SetInterval = function () {
-//   if (moving===null) {moving = setInterval(move,20)}}
-// var RemoveInterval = function(){clearInterval(moving);moving=null}
-
-// document.addEventListener("keydown", SetInterval)
-// document.addEventListener("click", RemoveInterval)
-
 class Pos {
   constructor(x1=0,y1=0){
     this.X = x1
@@ -109,7 +78,7 @@ class Obstacle extends Picture{
       CurrentDivMove.style.width = NewWidth
       CurrentDivMove.style.height = NewHeight
     }
-    
+
     CurrentDivMove.style.right = `${this.Posistion.X}px`
     
     if ( (Char1.Posistion.Y + Char1.Div.Height) >= this.Posistion.Y &&
