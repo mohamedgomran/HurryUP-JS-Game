@@ -45,6 +45,7 @@ class Div{
     this.Right = right1
     this.Id = id1
     this.Class=class1
+    this.create()
   }
 
   create(){
@@ -55,7 +56,6 @@ class Div{
     CreatedDiv.style.height = `${this.Height}px`
     CreatedDiv.style.bottom = `${this.Bottom}px`
     CreatedDiv.style.right = `${this.Right}px`
-    CreatedDiv.style.zIndex = this.ZIndex
     CreatedDiv.style.position = "absolute"
 
     CreatedDiv.id = this.Id
@@ -67,11 +67,13 @@ class Div{
 }
 
 class Picture{
-  constructor(div1, velocity1=0, ilink1=null){
+  constructor(div1, velocity1=5, ilink1=null){
+    this.Origin = new Pos(div1.Right,div1.Bottom)
     this.Posistion = new Pos(div1.Right,div1.Bottom)
     this.ImgLink = ilink1
     this.Velocity = velocity1
     this.Div = div1
+    this.init()
   }
 
   init(){
@@ -83,86 +85,148 @@ class Picture{
   }
 
   move(){
-
     let CurrentDivMove = document.getElementById(this.Div.Id)
+    this.Posistion.X += this.Velocity
+    if(this.Posistion.X>=CurrentDivMove.parentElement.offsetWidth){this.Posistion.X=-this.Div.Width}
     CurrentDivMove.style.right = `${this.Posistion.X}px`
-    this.Posistion.X += 5
-    if(this.Posistion.X===CurrentDivMove.parentElement.offsetWidth){this.Posistion.X=-this.Div.Width}
   }
 }
 
 
-class Character extends Picture{
-  constructor(div1, velocity1=0, ilink1=null){
+class Obstacle extends Picture{
+  constructor(div1, velocity1=5, ilink1=null){
     super(div1, velocity1, ilink1)
-    this.IsTop=0
+  }
+
+  move(Char1, i){
+    let CurrentDivMove = document.getElementById(this.Div.Id)
+    this.Posistion.X += this.Velocity
+    if(this.Posistion.X>=CurrentDivMove.parentElement.offsetWidth){this.Posistion.X=-(testimg[2].Posistion.X+100)}
+    CurrentDivMove.style.right = `${this.Posistion.X}px`
+    
+    if ( (Char1.Posistion.Y + Char1.Div.Height) >= this.Posistion.Y &&
+       (Char1.Posistion.Y <= (this.Posistion.Y + this.Div.Height) ) &&
+       (this.Posistion.X + this.Div.Width) >= (Char1.Posistion.X) &&
+       (this.Posistion.X <= (Char1.Posistion.X + Char1.Div.Width)) )
+    {
+
+      if (!0)
+        {alert("Game Over")
+          location.reload();}
+      else{
+        alert("you still have lives, hurry up :D")
+        location.reload();
+      }
+    }
+  }
+}
+
+class Character extends Picture{
+  constructor(div1, velocity1=5, ilink1=null, jump1=0){
+    super(div1, velocity1, ilink1)
+    this.Jump = jump1
+    this.IsTop = 0
   }
 
   move(){
 
     let CurrentDivMove = document.getElementById(this.Div.Id)
-    CurrentDivMove.style.bottom = `${this.Posistion.Y}px`
-    if (this.Posistion.Y<200 && !this.IsTop) {
+
+    if (this.Posistion.Y<this.Jump && !this.IsTop) {
       this.Posistion.Y+=this.Velocity
-      if(this.Posistion.Y==200){this.IsTop=1}
+      if(this.Posistion.Y==this.Jump){this.IsTop=1}
     }
-    else if (this.Posistion.Y>20) {
-      this.Posistion.Y -= this.Velocity}
-      if(this.Posistion.Y==20){this.IsTop=0;clearInterval(SetIntervalChar);SetIntervalChar=null}
+    else if (this.Posistion.Y>this.Div.Bottom) {
+      this.Posistion.Y -= this.Velocity
+      if(this.Posistion.Y==this.Div.Bottom){this.IsTop=0;clearInterval(SetIntervalChar);SetIntervalChar=null}
     }
+    CurrentDivMove.style.bottom = `${this.Posistion.Y}px`
 
   }
-
-class obstacle extends Picture{
-  constructor(div1, velocity1=0, ilink1=null){
-  super(div1, velocity1, ilink1)
-  }
-   move(){
-    let CurrentDivMove = document.getElementById(this.Div.Id)
-    CurrentDivMove.style.right = `${this.Posistion.X}px`
-    this.Posistion.X += 5
-    if(this.Posistion.X===CurrentDivMove.parentElement.offsetWidth){this.Posistion.X=-this.Div.Width}
-   }
 }
 
-var xx = new Div(70,70,35,-100,"obsdivvvv","obs")
-var yy = new obstacle(xx, 15, "imgs/obs.png")
-
-var xxx = new Div(760,70,0,0,"footerdiv1","footer")
-var yyy = new Picture(xxx, 5, "imgs/ground.png")
-
-var xxxx = new Div(760,70,0,-760,"footerdiv2","footer")
-var yyyy = new Picture(xxxx, 5, "imgs/ground.png")
 
 
-var xxxxx = new Div(100,100,20,500,"characterdiv","character")
-var yyyyy = new Character(xxxxx, 5 , "imgs/penguin.png")
+function getRandomInt(min, max) {
+  min = Math.ceil(min)
+  max = Math.floor(max)
+  return Math.floor(Math.random() * (max - min + 1)) + min
+}
 
-xx.create()
-yy.init()
-xxx.create()
-yyy.init()
-xxxx.create()
-yyyy.init()
-xxxxx.create()
-yyyyy.init()
-var lives=3
-var collision=function(divChar,char,divObs,obs) {
-  if ( (char.Posistion.Y + divChar.Height) >= obs.Posistion.Y &&
-       (char.Posistion.Y <= (obs.Posistion.Y + divObs.Height) ) &&
-       (obs.Posistion.X + divObs.Width) >= (char.Posistion.X) &&
-       (obs.Posistion.X <= (char.Posistion.X + divChar.Width)) )
-        {
-          if (!lives)
-            {alert("Game Over")
-              location.reload();}
-          else{
-            lives--;
-            alert("you still have lives, hurry up :D")
-            obs.Posistion.X=0
-          }
-        // obs.Posistion.X=0
-      }}
+function CreatingRandom(MinDimention, MaxDimention, bottom, MinRight, MaxRight){
+  var DivList = []
+  var ImgList = []
+  var RandRightIntOld = 0
+  for(var i=0; i<3;i++){
+    var RandWidthInt = getRandomInt(MinDimention,MaxDimention)
+    var RandHeightInt = getRandomInt(MinDimention*1.5,MaxDimention*1.5)
+    var RandRightInt = getRandomInt(0,1)
+    RandRightInt = RandRightInt==0 ? MinRight : MaxRight
+    RandRightIntOld = i==2 ? 760 : RandRightIntOld+RandRightInt
+    DivList[i] = new Div(RandWidthInt, RandHeightInt, bottom, -(RandRightIntOld), `obsdivvvv${i}`, "obs")
+    ImgList[i] = new Obstacle(DivList[i], 5 , "imgs/cactus.png")
+    console.log(RandRightIntOld)
+
+
+  }
+
+  return [DivList,ImgList]
+}
+
+
+var [testdiv, testimg] = CreatingRandom(30,50,45,20,300)
+
+
+var createrandompos = (min, max) => {
+  var RandRightInt = getRandomInt(min,max)
+
+
+}
+
+////////////////////////////////// getting that gets player parameters/////////////////////
+var charType
+var playerName
+
+if (location.search.substring(1)==="") 
+{
+	charType="penguin"
+	playerName="Player1"
+}
+else
+{
+	charType=location.search.substring(1).split("&")[0].split("=")[1]
+	playerName=location.search.substring(1).split("&")[1].split("=")[1]
+}
+
+////////////////////////////////////////////////////////////////////////////////////////////
+
+/////////////////////////////////changing the header dynamically////////////////////////////
+var player=document.getElementById("player")
+var level=document.getElementById("level")
+var lives=document.getElementById("lives")
+var coins=document.getElementById("coins")
+var score=document.getElementById("score")
+
+player.innerHTML=playerName
+
+////////////////////////////////////////////////////////////////////////////////////////////
+createrandompos()
+var Obsdiv = new Div(100,100,35,-100,"obsdivvvv","obs")
+var Obsimg = new Obstacle(Obsdiv, 5, "imgs/obs.png")
+
+var Footerdiv1 = new Div(760,70,0,0,"footerdiv1","footer")
+var Footerimg1 = new Picture(Footerdiv1, 5, "imgs/ground.png")
+
+var Footerdiv2 = new Div(760,70,0,-760,"footerdiv2","footer")
+var Footerimg2 = new Picture(Footerdiv2, 5, "imgs/ground.png")
+
+
+var characterDiv = new Div(20,100,20,500,"characterdiv","character")
+
+if (charType==="penguin") 
+	{var Penguinimg = new Character(characterDiv, 5, "imgs/penguin.png", 170)} 
+else 
+	{var Penguinimg = new Character(characterDiv, 5, "imgs/cat.gif", 170)}
 
 
 let SetInterval=null
@@ -171,19 +235,17 @@ document.addEventListener("keydown", function(e){
   
   if(SetIntervalChar===null){
     SetIntervalChar = setInterval(function(){
-      if(e.keyCode==32){yyyyy.move();}
+      if(e.keyCode==32){Penguinimg.move()}
     },16)
   }
 
   if(SetInterval===null){
     SetInterval = setInterval(function(){
-      yy.move()
-      yyy.move()
-      yyyy.move()
-      collision(xxxxx,yyyyy,xx,yy)
+      Footerimg1.move()
+      Footerimg2.move()
+      // Obsimg.move()
+      for (i in testimg) {testimg[i].move(Penguinimg, i)}
     },16)
   }
 })
 
-// if ((yy.Posistion.X<=(yyyyy.Posistion.X)+xxxxx.Width) && ((yy.Posistion.X)+yy.Width) >= yyyyy.Posistion.X )
-//   {alert("collision")}

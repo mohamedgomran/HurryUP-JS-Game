@@ -10,6 +10,17 @@
 
 }
 
+#main2{
+	width: 750px;
+	height: 500px;
+	position: relative;
+	margin: auto;
+	border-width: 5px;
+	border-style: solid;
+	overflow: hidden;
+	size: fixed;
+
+}
 .footer{
 	position: absolute;
 /*	bottom: 0px;
