@@ -101,7 +101,15 @@ class Obstacle extends Picture{
   move(Char1, i){
     let CurrentDivMove = document.getElementById(this.Div.Id)
     this.Posistion.X += this.Velocity
-    if(this.Posistion.X>=CurrentDivMove.parentElement.offsetWidth){this.Posistion.X=-(testimg[2].Posistion.X+100)}
+    poslist[i] = this.Posistion.X
+    if(this.Posistion.X>=CurrentDivMove.parentElement.offsetWidth){
+      var NewRightPos = CreatingRandomPos(300,500)
+      var [NewWidth, NewHeight] = CreatingRandomDim(30,50)
+      this.Posistion.X=-NewRightPos+Math.min(...poslist)
+      CurrentDivMove.style.width = NewWidth
+      CurrentDivMove.style.height = NewHeight
+    }
+    
     CurrentDivMove.style.right = `${this.Posistion.X}px`
     
     if ( (Char1.Posistion.Y + Char1.Div.Height) >= this.Posistion.Y &&
@@ -153,39 +161,48 @@ function getRandomInt(min, max) {
   return Math.floor(Math.random() * (max - min + 1)) + min
 }
 
+
+
+var CreatingRandomPos = (min, max) => {
+  var RandRightInt = getRandomInt(min,max)
+  return RandRightInt
+}
+
+var CreatingRandomDim = (min, max) => {
+  var RandWidthInt = getRandomInt(min, max)
+  var RandHeightInt = getRandomInt(min*1.5, max*1.5)
+  return [RandWidthInt, RandHeightInt]
+}
+
+
+
+
 function CreatingRandom(MinDimention, MaxDimention, bottom, MinRight, MaxRight){
   var DivList = []
   var ImgList = []
+  var PosList = []
   var RandRightIntOld = 0
   for(var i=0; i<3;i++){
-    var RandWidthInt = getRandomInt(MinDimention,MaxDimention)
-    var RandHeightInt = getRandomInt(MinDimention*1.5,MaxDimention*1.5)
-    var RandRightInt = getRandomInt(0,1)
-    RandRightInt = RandRightInt==0 ? MinRight : MaxRight
-    RandRightIntOld = i==2 ? 760 : RandRightIntOld+RandRightInt
+    var [RandWidthInt,RandHeightInt]  = CreatingRandomDim(MinDimention,MaxDimention)
+    RandRightInt = CreatingRandomPos(MinRight,MaxRight)
+    RandRightIntOld+=RandRightInt
+    PosList[i] = -RandRightIntOld
     DivList[i] = new Div(RandWidthInt, RandHeightInt, bottom, -(RandRightIntOld), `obsdivvvv${i}`, "obs")
-    ImgList[i] = new Obstacle(DivList[i], 5 , "imgs/cactus.png")
-    console.log(RandRightIntOld)
-
-
+    ImgList[i] = new Obstacle(DivList[i], 5 , "imgs/obs.png")
   }
 
-  return [DivList,ImgList]
+  return [DivList, ImgList, PosList]
 }
 
 
-var [testdiv, testimg] = CreatingRandom(30,50,45,20,300)
 
 
-var createrandompos = (min, max) => {
-  var RandRightInt = getRandomInt(min,max)
+var [testdiv, testimg, poslist] = CreatingRandom(30,50,45,300,500)
 
 
-}
 
-// createrandompos()
-// var Obsdiv = new Div(100,100,35,-100,"obsdivvvv","obs")
-// var Obsimg = new Obstacle(Obsdiv, 5, "imgs/obs.png")
+
+
 
 var Footerdiv1 = new Div(760,70,0,0,"footerdiv1","footer")
 var Footerimg1 = new Picture(Footerdiv1, 5, "imgs/ground.png")
