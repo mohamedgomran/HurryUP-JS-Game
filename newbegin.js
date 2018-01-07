@@ -37,7 +37,6 @@ class Div{
 
 class Picture{
   constructor(div1, velocity1=5, ilink1=null){
-    this.Origin = new Pos(div1.Right,div1.Bottom)
     this.Posistion = new Pos(div1.Right,div1.Bottom)
     this.ImgLink = ilink1
     this.Velocity = velocity1
@@ -71,38 +70,76 @@ class Obstacle extends Picture{
     let CurrentDivMove = document.getElementById(this.Div.Id)
     this.Posistion.X += this.Velocity
     poslist[i] = this.Posistion.X
+    CurrentDivMove.style.right = `${this.Posistion.X}px`
+
     if(this.Posistion.X>=CurrentDivMove.parentElement.offsetWidth){
       var NewRightPos = CreatingRandomPos(300,500)
       var [NewWidth, NewHeight] = CreatingRandomDim(30,50)
       this.Posistion.X=-NewRightPos+Math.min(...poslist)
+      poslist[i] = this.Posistion.X
       CurrentDivMove.style.width = NewWidth
       CurrentDivMove.style.height = NewHeight
     }
 
-    CurrentDivMove.style.right = `${this.Posistion.X}px`
     
     if ( (Char1.Posistion.Y + Char1.Div.Height) >= this.Posistion.Y &&
        (Char1.Posistion.Y <= (this.Posistion.Y + this.Div.Height) ) &&
        (this.Posistion.X + this.Div.Width) >= (Char1.Posistion.X) &&
        (this.Posistion.X <= (Char1.Posistion.X + Char1.Div.Width)) )
     {
-
-      if (!0)
+      if (!Char1.Life)
         {alert("Game Over")
           location.reload();}
       else{
         alert("you still have lives, hurry up :D")
+        Char1.Life--
         location.reload();
       }
     }
   }
 }
 
+
+class Coin extends Obstacle{
+ 
+
+  move(Char1, i){ 
+
+    let CurrentDivMove = document.getElementById(this.Div.Id)
+    this.Posistion.X += this.Velocity
+    CoinPosList[i] = this.Posistion.X
+    CurrentDivMove.style.right = `${this.Posistion.X}px`
+
+    if(this.Posistion.X>=CurrentDivMove.parentElement.offsetWidth || 
+       ((Char1.Posistion.Y + Char1.Div.Height) >= this.Posistion.Y &&
+       (Char1.Posistion.Y <= (this.Posistion.Y + this.Div.Height) ) &&
+       (this.Posistion.X + this.Div.Width) >= (Char1.Posistion.X) &&
+       (this.Posistion.X <= (Char1.Posistion.X + Char1.Div.Width)))) {
+
+      if(this.Posistion.X>=CurrentDivMove.parentElement.offsetWidth){}
+      
+      else{Char1.CoinCollected++}
+      var NewRightPos = CreatingRandomPos(30,300)
+      var NewBottom = CreatingRandomPos(45,250)
+      var [NewWidth, NewHeight] = CreatingRandomDim(30,30)
+      this.Posistion.X=-NewRightPos+Math.min(...CoinPosList)
+      CoinPosList[i] = this.Posistion.X
+      CurrentDivMove.style.width = NewWidth
+      CurrentDivMove.style.height = NewHeight
+      CurrentDivMove.style.bottom = NewBottom
+    }
+  }
+}
+
+
+
 class Character extends Picture{
-  constructor(div1, velocity1=5, ilink1=null, jump1=0){
+  constructor(div1, velocity1=5, ilink1=null, jump1=0, life1=3){
     super(div1, velocity1, ilink1)
     this.Jump = jump1
     this.IsTop = 0
+    this.CoinCollected = 0
+    this.Life = life1
   }
 
   move(){
@@ -139,25 +176,31 @@ var CreatingRandomPos = (min, max) => {
 
 var CreatingRandomDim = (min, max) => {
   var RandWidthInt = getRandomInt(min, max)
-  var RandHeightInt = getRandomInt(min*1.5, max*1.5)
+  var RandHeightInt = getRandomInt(min, max)
   return [RandWidthInt, RandHeightInt]
 }
 
 
 
 
-function CreatingRandom(MinDimention, MaxDimention, bottom, MinRight, MaxRight){
+function CreatingRandom(MinDimention, MaxDimention, MinBottom, MaxBottom, MinRight, MaxRight, num, ilink, id, class1){
   var DivList = []
   var ImgList = []
   var PosList = []
   var RandRightIntOld = 0
-  for(var i=0; i<3;i++){
+  for(var i=0; i<num;i++){
     var [RandWidthInt,RandHeightInt]  = CreatingRandomDim(MinDimention,MaxDimention)
-    RandRightInt = CreatingRandomPos(MinRight,MaxRight)
+    var RandRightInt = CreatingRandomPos(MinRight,MaxRight)
+    var BottomInt = CreatingRandomPos(MinBottom, MaxBottom)
     RandRightIntOld+=RandRightInt
     PosList[i] = -RandRightIntOld
-    DivList[i] = new Div(RandWidthInt, RandHeightInt, bottom, -(RandRightIntOld), `obsdivvvv${i}`, "obs")
-    ImgList[i] = new Obstacle(DivList[i], 5 , "imgs/obs.png")
+    DivList[i] = new Div(RandWidthInt, RandHeightInt, BottomInt, -(RandRightIntOld), `${id}${i}`, class1)
+    if (class1=="obs") {
+      ImgList[i] = new Obstacle(DivList[i], 5 , ilink)
+    }
+    else{
+      ImgList[i] = new Coin(DivList[i], 5 , ilink)
+    }
   }
 
   return [DivList, ImgList, PosList]
@@ -166,7 +209,9 @@ function CreatingRandom(MinDimention, MaxDimention, bottom, MinRight, MaxRight){
 
 
 
-var [testdiv, testimg, poslist] = CreatingRandom(30,50,45,300,500)
+var [testdiv, testimg, poslist] = CreatingRandom(30,50,45,45,300,500, 3, "imgs/obs.png", "obsdivvvv", "obs")
+
+var [CoinDiv, CoinImg, CoinPosList] = CreatingRandom(30,30,45,250,30,300, 5, "imgs/coin.png", "coindiv", "coin")
 
 
 
@@ -200,6 +245,8 @@ document.addEventListener("keydown", function(e){
       Footerimg2.move()
       // Obsimg.move()
       for (i in testimg) {testimg[i].move(Penguinimg, i)}
+      for (j in CoinImg) {CoinImg[j].move(Penguinimg, j)}
+
     },16)
   }
 })
