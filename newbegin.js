@@ -96,7 +96,7 @@ class Obstacle extends Picture{
   }
 
   move(Char1, i){
-    score.innerHTML="X "+ Char1.Score++  ////////////// modification
+    score.innerHTML="X"+ Char1.Score++  ////////////// modification
     let CurrentDivMove = document.getElementById(this.Div.Id)
     this.Posistion.X += this.Velocity
     poslist[i] = this.Posistion.X
@@ -123,7 +123,7 @@ class Obstacle extends Picture{
       else{
         alert("you still have lives, hurry up :D")
         Char1.Life--
-        lives.innerHTML="X "+Char1.Life
+        lives.innerHTML="X"+Char1.Life
         location.reload();
       }
     }
@@ -132,7 +132,6 @@ class Obstacle extends Picture{
 
 
 class Coin extends Obstacle{
- 
 
   move(Char1, i){ 
 
@@ -151,7 +150,7 @@ class Coin extends Obstacle{
       
       else{
             Char1.CoinCollected++;
-            coins.innerHTML="X "+Char1.CoinCollected;   ///modification
+            coins.innerHTML="X"+Char1.CoinCollected;   ///modification
           }
       var NewRightPos = CreatingRandomPos(30,500)
       var NewBottom = CreatingRandomPos(45,250)
@@ -258,13 +257,13 @@ var Footerdiv2 = new Div(760,70,0,-760,"footerdiv2","footer")
 var Footerimg2 = new Picture(Footerdiv2, 5, "imgs/ground.png")
 
 
-var characterDiv = new Div(20,100,20,500,"characterdiv","character")
+var CharacterDiv = new Div(20,100,20,500,"CharacterDiv","character")
 
 /////////////////////////////////////////generate a characater according to user input/////////
 if (charType==="penguin") 
-  {var Penguinimg = new Character(characterDiv, 5, "imgs/penguin.png", 170)} 
+  {var CharacterImg = new Character(CharacterDiv, 5, "imgs/penguin.png", 170)} 
 else 
-  {var Penguinimg = new Character(characterDiv, 5, "imgs/cat.gif", 170)}
+  {var CharacterImg = new Character(CharacterDiv, 5, "imgs/cat.gif", 170)}
 
 
 ///////////////////////////////////////////////////////////////////////////////////////////////
@@ -275,7 +274,7 @@ document.addEventListener("keydown", function(e){
   
   if(SetIntervalChar===null){
     SetIntervalChar = setInterval(function(){
-      if(e.keyCode==32){Penguinimg.move()}
+      if(e.keyCode==32){CharacterImg.move()}
     },16)
   }
 
@@ -284,8 +283,8 @@ document.addEventListener("keydown", function(e){
       Footerimg1.move()
       Footerimg2.move()
       // Obsimg.move()
-      for (i in testimg) {testimg[i].move(Penguinimg, i)}
-      for (j in CoinImg) {CoinImg[j].move(Penguinimg, j)}
+      for (i in testimg) {testimg[i].move(CharacterImg, i)}
+      for (j in CoinImg) {CoinImg[j].move(CharacterImg, j)}
 
     },16)
   }
