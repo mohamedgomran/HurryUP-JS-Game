@@ -275,7 +275,7 @@ document.addEventListener("keydown", function(e){
   if(SetIntervalChar===null){
      if(e.keyCode==32){
       SetIntervalChar = setInterval(function(){
-      CharacterImg.move()
+        CharacterImg.move()
       },16)
     }
     
