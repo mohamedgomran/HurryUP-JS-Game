@@ -110,7 +110,6 @@ class Obstacle extends Picture{
       CurrentDivMove.style.width = NewWidth
       CurrentDivMove.style.height = NewHeight
     }
-
     
     if ( (Char1.Posistion.Y + Char1.Div.Height) >= this.Posistion.Y &&
        (Char1.Posistion.Y <= (this.Posistion.Y + this.Div.Height) ) &&
@@ -124,7 +123,11 @@ class Obstacle extends Picture{
         alert("you still have lives, hurry up :D")
         Char1.Life--
         lives.innerHTML="X"+Char1.Life
-        location.reload();
+
+        var NewRightPos = CreatingRandomPos(300,500)
+        var [NewWidth, NewHeight] = CreatingRandomDim(30,50)
+        this.Posistion.X=-NewRightPos+Math.min(...poslist)
+        poslist[i] = this.Posistion.X
       }
     }
   }
