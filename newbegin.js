@@ -25,6 +25,19 @@ var score=document.getElementById("score")
 player.innerHTML=playerName
 
 ////////////////////////////////////////////////////////////////////////////////////////////
+var hidden = false;
+function newlevel(){
+    document.getElementById("1").style.visibility= hidden ? "visible" : "hidden";
+    hidden = !hidden;
+}
+var hidden2 =false;
+function highScore(){
+    document.getElementById("Hscore").style.visibility= hidden2 ? "visible" : "hidden";
+    hidden2 = !hidden2;
+}
+function myfun(){}
+
+
 
 
 class Pos {
@@ -96,7 +109,18 @@ class Obstacle extends Picture{
   }
 
   move(Char1, i){
-    score.innerHTML="X"+ Char1.Score++  ////////////// modification
+    score.innerHTML="X"+ Char1.Score++ 
+    if(Char1.Score > 500)
+            {
+             highScore();
+
+             //highScore();
+        //document.getElementById("Hscore").style.visibility='visible';
+        //highScore();
+            }
+     ////////////// modification
+     
+
     let CurrentDivMove = document.getElementById(this.Div.Id)
     this.Posistion.X += this.Velocity
     poslist[i] = this.Posistion.X
@@ -118,13 +142,20 @@ class Obstacle extends Picture{
        (this.Posistion.X <= (Char1.Posistion.X + Char1.Div.Width)) )
     {
       if (!Char1.Life)
-        {alert("Game Over")
+        {
+          //setInterval(ww,2000);
+          //alert("Game Over")
           location.reload();}
       else{
-        alert("you still have lives, hurry up :D")
+        //setInterval(ww,2000);
+        newlevel();
+        newlevel();
+        
+        
+        //alert("you still have lives, hurry up :D")
         Char1.Life--
         lives.innerHTML="X"+Char1.Life
-        location.reload();
+        //location.reload();
       }
     }
   }
@@ -150,8 +181,13 @@ class Coin extends Obstacle{
       
       else{
             Char1.CoinCollected++;
-            coins.innerHTML="X"+Char1.CoinCollected;   ///modification
+            /**/
+            coins.innerHTML="X"+Char1.CoinCollected;  
+            
+
+             ///modification
           }
+
       var NewRightPos = CreatingRandomPos(30,500)
       var NewBottom = CreatingRandomPos(45,250)
       var [NewWidth, NewHeight] = CreatingRandomDim(30,30)
