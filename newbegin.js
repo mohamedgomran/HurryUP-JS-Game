@@ -63,6 +63,21 @@ class Div{
   }
 
 
+  static change(divlist1, poslist1, MinDimention, MaxDimention, MinBottom, MaxBottom, MinRight, MaxRight){
+    var RandRightIntOld = 0
+    
+    for(var i=0; i<divlist1.length;i++){
+      var [RandWidthInt,RandHeightInt]  = CreatingRandomDim(MinDimention,MaxDimention)
+      var RandRightInt = CreatingRandomPos(MinRight,MaxRight)
+      var BottomInt = CreatingRandomPos(MinBottom, MaxBottom)
+      RandRightIntOld+=RandRightInt
+      poslist1[i].Right = -RandRightIntOld
+      divlist1[i].Width = RandWidthInt
+      divlist1[i].Height = RandHeightInt
+      divlist1[i].Bottom = BottomInt
+    }
+  }
+
   create(){
     let CreatedDiv = document.createElement('div')
     let MainDiv = document.getElementById("main")
@@ -99,6 +114,17 @@ class Picture{
     return ImgList
   }
 
+
+  static change(imglist1, velocity1, ilink1){
+    for(var i=0; i<imglist1.length;i++){
+      var CurrentDiv = document.getElementById(imglist1[i].Div.Id).firstChild
+      imglist1[i].ImgLink = ilink1
+      CurrentDiv.src = ilink1
+      imglist1[i].Velocity = velocity1
+    }
+  }
+
+
   init(){
     let CurrentDiv = document.getElementById(this.Div.Id)
     let CreatedImg = document.createElement('img')
@@ -131,6 +157,17 @@ class Obstacle extends Picture{
     }
     return ImgList
   }
+
+
+  static change(imglist1, velocity1, ilink1){
+    for(var i=0; i<imglist1.length;i++){
+      var CurrentDiv = document.getElementById(imglist1[i].Div.Id).firstChild
+      imglist1[i].ImgLink = ilink1
+      CurrentDiv.src = ilink1
+      imglist1[i].Velocity = velocity1
+    }
+  }
+
 
   move(Char1, i){
     score.innerHTML="X"+ Char1.Score++  ////////////// modification
@@ -182,6 +219,16 @@ class Coin extends Obstacle{
     return ImgList
   }
 
+
+  static change(imglist1, velocity1, ilink1){
+    for(var i=0; i<imglist1.length;i++){
+      var CurrentDiv = document.getElementById(imglist1[i].Div.Id).firstChild
+      imglist1[i].ImgLink = ilink1
+      CurrentDiv.src = ilink1
+      imglist1[i].Velocity = velocity1
+    }
+  }
+
   move(Char1, i){ 
 
     let CurrentDivMove = document.getElementById(this.Div.Id)
@@ -201,6 +248,8 @@ class Coin extends Obstacle{
             Char1.CoinCollected++;
             coins.innerHTML="X"+Char1.CoinCollected;   ///modification
           }
+
+
       var NewRightPos = CreatingRandomPos(30,500)
       var NewBottom = CreatingRandomPos(45,250)
       var [NewWidth, NewHeight] = CreatingRandomDim(30,30)
@@ -242,6 +291,7 @@ class Character extends Picture{
   }
 }
 
+////////////////////////////////////////////////////////////////////////////////
 
 
 function getRandomInt(min, max) {
@@ -251,7 +301,6 @@ function getRandomInt(min, max) {
 }
 
 
-////////////////////////////////////////////////////////////////////////////////
 var CreatingRandomPos = (min, max) => {
   var RandRightInt = getRandomInt(min,max)
   return RandRightInt
@@ -272,7 +321,6 @@ var testimg = Obstacle.createrandom(testdiv, Speed, "imgs/obs.png")
 
 var [CoinDiv, CoinPosList] = Div.createrandom(30,30,45,250,30,500, 5, "coindiv", "coin")
 var CoinImg = Coin.createrandom(CoinDiv, Speed, "imgs/coin.png")
-
 
 
 var Footerdiv1 = new Div(840,70,0,0,"footerdiv1","footer")
