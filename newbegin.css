@@ -23,23 +23,14 @@
 }
 .footer{
 	position: absolute;
-/*	bottom: 0px;
-	width: 750px;
-	height: 70px;*/
 	z-index: -1;
 
 }
 
-/*#footerdiv2{
-	right: -750px;
-}*/
+
 
 .obs{
 	position: absolute;
-/*	bottom: 30px;
-	right: -100px;
-	width: 100px;
-	height: 100px;*/
 	z-index: -2;
 }
 
@@ -59,7 +50,7 @@
       box-shadow: inset 0px 1px 0px #3e9cbf, 0px 5px 0px 0px #205c73, 0px 10px 5px #999;
       -moz-border-radius: 10px;
       -webkit-border-radius: 10px;
-      border-radius: 10px;
+      border-radius: 0px;
       font-size: 3;
       font-family:Oswald, sans-serif;
       color: white;
