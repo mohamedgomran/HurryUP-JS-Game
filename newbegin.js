@@ -1,7 +1,7 @@
 ////////////////////////////////// getting that gets player parameters/////////////////////
 var charType
 var playerName
-
+var Speed = 6
 if (location.search.substring(1)==="") 
 {
   charType="penguin"
@@ -46,6 +46,23 @@ class Div{
     this.create()
   }
 
+  static createrandom(MinDimention, MaxDimention, MinBottom, MaxBottom, MinRight, MaxRight, num, id, class1){
+  
+    var DivList = []
+    var PosList = []
+    var RandRightIntOld = 0
+    for(var i=0; i<num;i++){
+      var [RandWidthInt,RandHeightInt]  = CreatingRandomDim(MinDimention,MaxDimention)
+      var RandRightInt = CreatingRandomPos(MinRight,MaxRight)
+      var BottomInt = CreatingRandomPos(MinBottom, MaxBottom)
+      RandRightIntOld+=RandRightInt
+      PosList[i] = -RandRightIntOld
+      DivList[i] = new Div(RandWidthInt, RandHeightInt, BottomInt, -(RandRightIntOld), `${id}${i}`, class1)
+    }
+    return [DivList, PosList]
+  }
+
+
   create(){
     let CreatedDiv = document.createElement('div')
     let MainDiv = document.getElementById("main")
@@ -73,6 +90,15 @@ class Picture{
     this.init()
   }
 
+  static createrandom(divlist1, velocity1, ilink1){
+    
+    var ImgList = []
+    for(var i=0; i<divlist1.length;i++){
+      ImgList[i] = new Picture(divlist1[i], velocity1 , ilink1)
+    }
+    return ImgList
+  }
+
   init(){
     let CurrentDiv = document.getElementById(this.Div.Id)
     let CreatedImg = document.createElement('img')
@@ -84,15 +110,26 @@ class Picture{
   move(){
     let CurrentDivMove = document.getElementById(this.Div.Id)
     this.Posistion.X += this.Velocity
-    if(this.Posistion.X>=CurrentDivMove.parentElement.offsetWidth){this.Posistion.X=-this.Div.Width}
+    if(this.Posistion.X>=CurrentDivMove.parentElement.clientWidth){this.Posistion.X=-this.Div.Width}
     CurrentDivMove.style.right = `${this.Posistion.X}px`
   }
+
 }
 
 
 class Obstacle extends Picture{
   constructor(div1, velocity1=5, ilink1=null){
     super(div1, velocity1, ilink1)
+  }
+
+
+  static createrandom(divlist1, velocity1, ilink1){
+    
+    var ImgList = []
+    for(var i=0; i<divlist1.length;i++){
+      ImgList[i] = new Obstacle(divlist1[i], velocity1 , ilink1)
+    }
+    return ImgList
   }
 
   move(Char1, i){
@@ -102,7 +139,7 @@ class Obstacle extends Picture{
     poslist[i] = this.Posistion.X
     CurrentDivMove.style.right = `${this.Posistion.X}px`
 
-    if(this.Posistion.X>=CurrentDivMove.parentElement.offsetWidth){
+    if(this.Posistion.X>=CurrentDivMove.parentElement.clientWidth){
       var NewRightPos = CreatingRandomPos(300,500)
       var [NewWidth, NewHeight] = CreatingRandomDim(30,50)
       this.Posistion.X=-NewRightPos+Math.min(...poslist)
@@ -136,6 +173,15 @@ class Obstacle extends Picture{
 
 class Coin extends Obstacle{
 
+  static createrandom(divlist1, velocity1, ilink1){
+    
+    var ImgList = []
+    for(var i=0; i<divlist1.length;i++){
+      ImgList[i] = new Coin(divlist1[i], velocity1 , ilink1)
+    }
+    return ImgList
+  }
+
   move(Char1, i){ 
 
     let CurrentDivMove = document.getElementById(this.Div.Id)
@@ -143,13 +189,13 @@ class Coin extends Obstacle{
     CoinPosList[i] = this.Posistion.X
     CurrentDivMove.style.right = `${this.Posistion.X}px`
 
-    if(this.Posistion.X>=CurrentDivMove.parentElement.offsetWidth || 
+    if(this.Posistion.X>=CurrentDivMove.parentElement.clientWidth || 
        ((Char1.Posistion.Y + Char1.Div.Height) >= this.Posistion.Y &&
        (Char1.Posistion.Y <= (this.Posistion.Y + this.Div.Height) ) &&
        (this.Posistion.X + this.Div.Width) >= (Char1.Posistion.X) &&
        (this.Posistion.X <= (Char1.Posistion.X + Char1.Div.Width)))) {
 
-      if(this.Posistion.X>=CurrentDivMove.parentElement.offsetWidth){}
+      if(this.Posistion.X>=CurrentDivMove.parentElement.clientWidth){}
       
       else{
             Char1.CoinCollected++;
@@ -205,7 +251,7 @@ function getRandomInt(min, max) {
 }
 
 
-
+////////////////////////////////////////////////////////////////////////////////
 var CreatingRandomPos = (min, max) => {
   var RandRightInt = getRandomInt(min,max)
   return RandRightInt
@@ -218,46 +264,22 @@ var CreatingRandomDim = (min, max) => {
 }
 
 
+////////////////////////////////////////////////////////////////////////////////
+
+var [testdiv, poslist] = Div.createrandom(30,50,45,45,300,500, 3, "obsdivvvv", "obs")
+var testimg = Obstacle.createrandom(testdiv, Speed, "imgs/obs.png")
 
 
-function CreatingRandom(MinDimention, MaxDimention, MinBottom, MaxBottom, MinRight, MaxRight, num, ilink, id, class1){
-  var DivList = []
-  var ImgList = []
-  var PosList = []
-  var RandRightIntOld = 0
-  for(var i=0; i<num;i++){
-    var [RandWidthInt,RandHeightInt]  = CreatingRandomDim(MinDimention,MaxDimention)
-    var RandRightInt = CreatingRandomPos(MinRight,MaxRight)
-    var BottomInt = CreatingRandomPos(MinBottom, MaxBottom)
-    RandRightIntOld+=RandRightInt
-    PosList[i] = -RandRightIntOld
-    DivList[i] = new Div(RandWidthInt, RandHeightInt, BottomInt, -(RandRightIntOld), `${id}${i}`, class1)
-    if (class1=="obs") {
-      ImgList[i] = new Obstacle(DivList[i], 5 , ilink)
-    }
-    else{
-      ImgList[i] = new Coin(DivList[i], 5 , ilink)
-    }
-  }
-
-  return [DivList, ImgList, PosList]
-}
-
-
-var [testdiv, testimg, poslist] = CreatingRandom(30,50,45,45,300,500, 3, "imgs/obs.png", "obsdivvvv", "obs")
-
-var [CoinDiv, CoinImg, CoinPosList] = CreatingRandom(30,30,45,250,30,500, 5, "imgs/coin.png", "coindiv", "coin")
+var [CoinDiv, CoinPosList] = Div.createrandom(30,30,45,250,30,500, 5, "coindiv", "coin")
+var CoinImg = Coin.createrandom(CoinDiv, Speed, "imgs/coin.png")
 
 
 
+var Footerdiv1 = new Div(840,70,0,0,"footerdiv1","footer")
+var Footerimg1 = new Picture(Footerdiv1, Speed, "imgs/ground.png")
 
-
-
-var Footerdiv1 = new Div(760,70,0,0,"footerdiv1","footer")
-var Footerimg1 = new Picture(Footerdiv1, 5, "imgs/ground.png")
-
-var Footerdiv2 = new Div(760,70,0,-760,"footerdiv2","footer")
-var Footerimg2 = new Picture(Footerdiv2, 5, "imgs/ground.png")
+var Footerdiv2 = new Div(840,70,0,-840,"footerdiv2","footer")
+var Footerimg2 = new Picture(Footerdiv2, Speed, "imgs/ground.png")
 
 
 var CharacterDiv = new Div(20,100,20,500,"CharacterDiv","character")
