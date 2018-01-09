@@ -305,10 +305,10 @@ var [CoinDiv, CoinImg, CoinPosList] = CreatingRandom(30,30,45,250,30,500, 5, "im
 
 
 
-var Footerdiv1 = new Div(760,70,0,0,"footerdiv1","footer")
+var Footerdiv1 = new Div(760,500,0,0,"footerdiv1","footer")
 var Footerimg1 = new Picture(Footerdiv1, 5, "imgs/ground.png")
 
-var Footerdiv2 = new Div(760,70,0,-760,"footerdiv2","footer")
+var Footerdiv2 = new Div(760,500,0,-760,"footerdiv2","footer")
 var Footerimg2 = new Picture(Footerdiv2, 5, "imgs/ground.png")
 
 
