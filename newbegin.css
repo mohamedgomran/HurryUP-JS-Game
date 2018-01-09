@@ -23,7 +23,7 @@
 }
 .footer{
 	position: absolute;
-	z-index: -1;
+	z-index: -2;
 
 }
 
@@ -31,7 +31,7 @@
 
 .obs{
 	position: absolute;
-	z-index: -2;
+	z-index: -1;
 }
 
 .imgindiv{
