@@ -117,7 +117,15 @@ class Obstacle extends Picture{
        (this.Posistion.X <= (Char1.Posistion.X + Char1.Div.Width)) )
     {
       if (!Char1.Life)
-        {alert("Game Over")
+        { var highScore = parseInt(localStorage.getItem('highScore')) || 0;
+          if (Char1.Score > highScore)
+          {
+          highScore = Char1.Score;
+          localStorage.setItem('highScore', highScore);
+          localStorage.setItem('username', playerName);
+          }
+          alert("highScore = "+highScore+" recorded by "+localStorage.getItem('username'))
+          alert("Game Over")
           location.reload();}
       else{
         alert("you still have lives, hurry up :D")

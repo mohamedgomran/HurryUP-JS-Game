@@ -58,9 +58,11 @@
 
 .fixedCells{
 	text-align: right;
+	width: 10%
 }
 .changingCells{
 	text-align: left;
+	width:10%;
 }
 
 .headerImages{
