@@ -273,26 +273,34 @@ else
 
 let SetInterval=null
 let SetIntervalChar=null
-document.addEventListener("keydown", function(e){
-  
-  if(SetIntervalChar===null){
-     if(e.keyCode==32){
-      SetIntervalChar = setInterval(function(){
-        CharacterImg.move()
+var x=document.addEventListener("keydown", function(e)
+{
+  if (e.keyCode===27) {alert("width")} 
+  else 
+  {
+    if(SetIntervalChar===null)
+    {
+      if(e.keyCode==32)
+      {
+        SetIntervalChar = setInterval(function()
+        {
+          CharacterImg.move()
+        },16)
+      }
+    }
+
+    if(SetInterval===null)
+    {
+      SetInterval = setInterval(function()
+      {
+        Footerimg1.move()
+        Footerimg2.move()
+        // Obsimg.move()
+        for (i in testimg) {testimg[i].move(CharacterImg, i)}
+        for (j in CoinImg) {CoinImg[j].move(CharacterImg, j)}
+
       },16)
     }
-    
-  }
-
-  if(SetInterval===null){
-    SetInterval = setInterval(function(){
-      Footerimg1.move()
-      Footerimg2.move()
-      // Obsimg.move()
-      for (i in testimg) {testimg[i].move(CharacterImg, i)}
-      for (j in CoinImg) {CoinImg[j].move(CharacterImg, j)}
-
-    },16)
   }
 })
 
