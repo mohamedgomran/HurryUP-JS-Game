@@ -64,7 +64,7 @@ body#firstpage {
 }
 
 body#secondpage {
-    background-image: url('5.jpeg');
+    background-image: url('5.jpg');
     background-repeat: no-repeat;
     background-attachment: fixed;
     background-position: center;
@@ -74,7 +74,7 @@ body#thirdpage {
     background-image: url('4.jpg');
     background-repeat: no-repeat;
     background-attachment: fixed;
-    background-position: center;
+    background-position: inherit;
     background-size: cover;
 }
 p.hurry {
@@ -84,20 +84,21 @@ p.hurry {
 }
 p.name {
   color: #673AB7;
-  font-size: 40px;
+  font-size: 100px;
 font-family: "Gill Sans", sans-serif;
   direction: ltr;
 }
-input[type=text], select {
-    width: 25%;
+#pname{
+    width: 60%;
     padding: 12px 20px;
     margin: 8px 0;
     display: inline-block;
-    border: 1px solid #ccc;
+    border: 5px solid #e74c3c;
     border-radius: 4px;
     box-sizing: border-box;
+    text-align: center;
 }
-import url(https://fonts.googleapis.com/css?family=Mr+Dafoe);
+@import url(https://fonts.googleapis.com/css?family=Mr+Dafoe);
 @import url(https://fonts.googleapis.com/css?family=Titillium+Web:900);
 @import url(https://fonts.googleapis.com/css?family=Righteous);
 @import url(https://fonts.googleapis.com/css?family=Candal);
@@ -115,7 +116,7 @@ body { background: #000; color: #fff; position: relative;}
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
   -webkit-text-stroke: 4px #f5f5f5;
-  font-size: 200px;
+  font-size: 150px;
   font-family: 'Titillium Web', sans-serif;
   font-style: italic;
   margin: 0;
@@ -145,12 +146,12 @@ body { background: #000; color: #fff; position: relative;}
   position: absolute;
   margin: 0px;
   font-family: 'Mr Dafoe', cursive;
-  font-size: 160px;
+  font-size: 100px;
   color:#18FFFF;
   transform:rotate(-15deg);
   -ms-transform:rotate(-15deg); /* IE 9 */
   -webkit-transform:rotate(-15deg); /* Safari and Chrome */
-  margin-left: 650px;
+  margin-left: 300px;
   margin-top: -100px;
   -webkit-text-stroke: 1px #311B92);
   -webkit-filter: drop-shadow(2px 2px 20px #311B92);
@@ -166,3 +167,4 @@ body { background: #000; color: #fff; position: relative;}
   10% {background-position:420px 0;}
   100% {background-position:420px 0;}
 }
+

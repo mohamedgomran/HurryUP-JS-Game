@@ -1,0 +1,31 @@
+ /* Container properties */
+#scene {
+   width: 400px;
+   height: 300px;
+   position: relative;
+   overflow: hidden;
+   background: #0099ff;
+   /* general syntax */
+   background: linear-gradient(top, #0099ff, #00ccff);
+}
+
+/* Image Properties */
+
+.cloud {
+   position: absolute;
+   animation: cloudDrift linear infinite;
+}
+
+.lrg {
+   /*width 130px*/
+   top: 40px;
+   left: 400px;
+   animation-duration: 4s;
+}
+
+
+/* Clouds drifting */
+@keyframes cloudDrift {
+   from { transform: translateX(0px); }
+   to { transform: translateX(540px); }
+}
