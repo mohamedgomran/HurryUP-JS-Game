@@ -1,7 +1,7 @@
 ////////////////////////////////// getting that gets player parameters/////////////////////
 var charType
 var playerName
-var Speed = 6
+var Speed = 4
 if (location.search.substring(1)==="") 
 {
   charType="penguin"
@@ -49,17 +49,17 @@ class Div{
   static createrandom(MinDimention, MaxDimention, MinBottom, MaxBottom, MinRight, MaxRight, num, id, class1){
   
     var DivList = []
-    var PosList = []
+    var ObsPosList = []
     var RandRightIntOld = 0
     for(var i=0; i<num;i++){
       var [RandWidthInt,RandHeightInt]  = CreatingRandomDim(MinDimention,MaxDimention)
       var RandRightInt = CreatingRandomPos(MinRight,MaxRight)
       var BottomInt = CreatingRandomPos(MinBottom, MaxBottom)
       RandRightIntOld+=RandRightInt
-      PosList[i] = -RandRightIntOld
+      ObsPosList[i] = -RandRightIntOld
       DivList[i] = new Div(RandWidthInt, RandHeightInt, BottomInt, -(RandRightIntOld), `${id}${i}`, class1)
     }
-    return [DivList, PosList]
+    return [DivList, ObsPosList]
   }
 
 
@@ -71,7 +71,8 @@ class Div{
       var RandRightInt = CreatingRandomPos(MinRight,MaxRight)
       var BottomInt = CreatingRandomPos(MinBottom, MaxBottom)
       RandRightIntOld+=RandRightInt
-      poslist1[i].Right = -RandRightIntOld
+      poslist1[i] = -RandRightIntOld
+      divlist1[i].Right = -RandRightIntOld
       divlist1[i].Width = RandWidthInt
       divlist1[i].Height = RandHeightInt
       divlist1[i].Bottom = BottomInt
@@ -159,33 +160,27 @@ class Obstacle extends Picture{
   }
 
 
-  static change(imglist1, velocity1, ilink1){
-    for(var i=0; i<imglist1.length;i++){
-      var CurrentDiv = document.getElementById(imglist1[i].Div.Id).firstChild
-      imglist1[i].ImgLink = ilink1
-      CurrentDiv.src = ilink1
-      imglist1[i].Velocity = velocity1
-    }
-  }
-
-
   move(Char1, i){
     score.innerHTML="X"+ Char1.Score++  ////////////// modification
+    
+
+
     let CurrentDivMove = document.getElementById(this.Div.Id)
     this.Posistion.X += this.Velocity
-    poslist[i] = this.Posistion.X
+    ObsPosList[i] = this.Posistion.X
     CurrentDivMove.style.right = `${this.Posistion.X}px`
 
     if(this.Posistion.X>=CurrentDivMove.parentElement.clientWidth){
-      var NewRightPos = CreatingRandomPos(300,500)
+      
+      var NewRightPos = CreatingRandomPos(400,500)
       var [NewWidth, NewHeight] = CreatingRandomDim(30,50)
-      this.Posistion.X=-NewRightPos+Math.min(...poslist)
-      poslist[i] = this.Posistion.X
+      this.Posistion.X=-NewRightPos+Math.min(...ObsPosList)
+      ObsPosList[i] = this.Posistion.X
       CurrentDivMove.style.width = NewWidth
       CurrentDivMove.style.height = NewHeight
     }
     
-    if ( (Char1.Posistion.Y + Char1.Div.Height) >= this.Posistion.Y &&
+    else if ( (Char1.Posistion.Y + Char1.Div.Height) >= this.Posistion.Y &&
        (Char1.Posistion.Y <= (this.Posistion.Y + this.Div.Height) ) &&
        (this.Posistion.X + this.Div.Width) >= (Char1.Posistion.X) &&
        (this.Posistion.X <= (Char1.Posistion.X + Char1.Div.Width)) )
@@ -198,10 +193,53 @@ class Obstacle extends Picture{
         Char1.Life--
         lives.innerHTML="X"+Char1.Life
 
-        var NewRightPos = CreatingRandomPos(300,500)
+        var NewRightPos = CreatingRandomPos(400,500)
         var [NewWidth, NewHeight] = CreatingRandomDim(30,50)
-        this.Posistion.X=-NewRightPos+Math.min(...poslist)
-        poslist[i] = this.Posistion.X
+        this.Posistion.X=-NewRightPos+Math.min(...ObsPosList)
+        ObsPosList[i] = this.Posistion.X
+
+        //No need to change dim here
+        // CurrentDivMove.style.width = NewWidth
+        // CurrentDivMove.style.height = NewHeight
+      }
+    }
+
+
+    //Level Handling //
+
+    if (Char1.Score>200){
+      if(!Char1.Level2)
+      {
+        Speed = 6
+        FooterImg[0].Posistion.X=0
+        var CurrentDiv1 = document.getElementById(FooterImg[0].Div.Id)
+        CurrentDiv1.style.right = `${FooterImg[0].Posistion.X}px`
+
+        FooterImg[1].Posistion.X=-840
+        var CurrentDiv2 = document.getElementById(FooterImg[1].Div.Id)
+        CurrentDiv2.style.right = `${FooterImg[1].Posistion.X}px`
+
+        Obstacle.change(ObsImg, Speed, "imgs/obs.png")
+        Coin.change(CoinImg, Speed, "imgs/coin.png")
+        Picture.change(FooterImg, Speed, "imgs/ground.png")
+        Char1.Level2=1
+
+      }
+      if(Char1.Score>500&&!Char1.Level3){
+        Speed = 8
+        FooterImg[0].Posistion.X=0
+        var CurrentDiv1 = document.getElementById(FooterImg[0].Div.Id)
+        CurrentDiv1.style.right = `${FooterImg[0].Posistion.X}px`
+
+        FooterImg[1].Posistion.X=-840
+        var CurrentDiv2 = document.getElementById(FooterImg[1].Div.Id)
+        CurrentDiv2.style.right = `${FooterImg[1].Posistion.X}px`
+
+        Obstacle.change(ObsImg, Speed, "imgs/obs.png")
+        Coin.change(CoinImg, Speed, "imgs/coin.png")
+        Picture.change(FooterImg, Speed, "imgs/ground.png")
+        Char1.Level3 = 1
+        Char1.Velocity = 6
       }
     }
   }
@@ -219,15 +257,6 @@ class Coin extends Obstacle{
     return ImgList
   }
 
-
-  static change(imglist1, velocity1, ilink1){
-    for(var i=0; i<imglist1.length;i++){
-      var CurrentDiv = document.getElementById(imglist1[i].Div.Id).firstChild
-      imglist1[i].ImgLink = ilink1
-      CurrentDiv.src = ilink1
-      imglist1[i].Velocity = velocity1
-    }
-  }
 
   move(Char1, i){ 
 
@@ -272,6 +301,8 @@ class Character extends Picture{
     this.CoinCollected = 0
     this.Life = life1
     this.Score = 0
+    this.Level2 = 0
+    this.Level3 = 0
   }
 
   move(){
@@ -315,8 +346,8 @@ var CreatingRandomDim = (min, max) => {
 
 ////////////////////////////////////////////////////////////////////////////////
 
-var [testdiv, poslist] = Div.createrandom(30,50,45,45,300,500, 3, "obsdivvvv", "obs")
-var testimg = Obstacle.createrandom(testdiv, Speed, "imgs/obs.png")
+var [ObsDiv, ObsPosList] = Div.createrandom(30,50,45,45,300,500, 3, "obsdivvvv", "obs")
+var ObsImg = Obstacle.createrandom(ObsDiv, Speed, "imgs/obs.png")
 
 
 var [CoinDiv, CoinPosList] = Div.createrandom(30,30,45,250,30,500, 5, "coindiv", "coin")
@@ -329,8 +360,9 @@ var Footerimg1 = new Picture(Footerdiv1, Speed, "imgs/ground.png")
 var Footerdiv2 = new Div(840,70,0,-840,"footerdiv2","footer")
 var Footerimg2 = new Picture(Footerdiv2, Speed, "imgs/ground.png")
 
-
 var CharacterDiv = new Div(20,100,20,500,"CharacterDiv","character")
+
+var FooterImg = [Footerimg1, Footerimg2]
 
 /////////////////////////////////////////generate a characater according to user input/////////
 if (charType==="penguin") 
@@ -359,7 +391,7 @@ document.addEventListener("keydown", function(e){
       Footerimg1.move()
       Footerimg2.move()
       // Obsimg.move()
-      for (i in testimg) {testimg[i].move(CharacterImg, i)}
+      for (i in ObsImg) {ObsImg[i].move(CharacterImg, i)}
       for (j in CoinImg) {CoinImg[j].move(CharacterImg, j)}
 
     },16)
