@@ -41,7 +41,7 @@
 
 .header{
 	  
-	  background-color: #16a085;
+	  background-color: deeppink;
       height: 10%;
       position: absolute;
       width: 100%;
@@ -54,6 +54,7 @@
       font-size: 3;
       font-family:Oswald, sans-serif;
       color: white;
+
 }
 
 .fixedCells{
