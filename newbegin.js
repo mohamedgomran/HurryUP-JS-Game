@@ -193,7 +193,9 @@ class Character extends Picture{
     let CurrentDivMove = document.getElementById(this.Div.Id)
 
     if (this.Posistion.Y<this.Jump && !this.IsTop)
-     {JumpAudio();
+     {
+    
+      if(this.Posistion.Y==this.Div.Bottom){JumpAudio()}
       this.Posistion.Y+=this.Velocity
       if(this.Posistion.Y==this.Jump){
 
@@ -206,7 +208,7 @@ class Character extends Picture{
       if(this.Posistion.Y==this.Div.Bottom){this.IsTop=0;clearInterval(SetIntervalChar);SetIntervalChar=null}
     }
     CurrentDivMove.style.bottom = `${this.Posistion.Y}px`
-
+    
   }
 }
 
