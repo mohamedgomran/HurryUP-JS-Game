@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>W3.CSS</title>
+
+<!--<link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css"> 
+<meta name="viewport" content="width=device-width, initial-scale=1">
+-->
+
+<style type="text/css">
+.container{
+width: 800px;
+height: 400px;
+   background-color: yellow;
+  border-color: blue;
+  display: block;
+
+   
+  
+}
+  .border{
+
+    background-color: gray;
+    border-radius: 25px;
+   
+
+  }
+  .myBar{
+    background-color: blue;
+    border-radius: 25px;
+     
+  }
+</style>
+
+
+
+</head>
+<body onload="load()">
+
+<div class="container"  >
+  <center>
+    <img src="bk.png"  style="height: 50%">
+  </center>
+
+  <div class="border" style="width: 300px height:24px top:200px" >
+   
+    <div id="Bar" class="myBar" style="height:24px;width:0"></div>
+
+  </div>
+
+</div>
+
+<script>
+function load()
+{
+  var next = document.getElementById("container");
+  var pbar = document.getElementById("Bar");
+  var width= 1 ;
+  var intid=setInterval(move,15);
+  function move()
+  {
+    if(width >=100)
+    {
+      clearInterval(intid);
+    }else
+    {
+      width++;
+      pbar.style.width=width+'%';
+
+    }
+  }
+  
+  
+
+}
+</script>
+
+</body>
+</html> 
