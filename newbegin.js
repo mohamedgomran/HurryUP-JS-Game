@@ -316,12 +316,15 @@ var JumpSound = document.getElementById('jump')
 var LoseSound = document.getElementById('lose')
 var GameOverSound = document.getElementById('gameover')
 var LevelUpSound = document.getElementById('level')
-var music = document.getElementById('music')
+var Music = document.getElementById('music')
 
 
 
 
-
+function MusicAudio()
+{
+  Music.play();
+}
 
   function CoinAudio()
   {
@@ -341,7 +344,7 @@ var music = document.getElementById('music')
   {
     GameOverSound.play();
   }
-/*
+
   function PauseAudio()
   {
     CoinSound.pause();
@@ -350,4 +353,15 @@ var music = document.getElementById('music')
     GameOverSound.pause();
   }
 
-*/  
+  function mutesound() {
+
+     if (document.getElementById("unmute"))
+     {
+         document.getElementById("unmute").src = "mute.png";
+         PauseAudio();
+     }
+     else
+     {
+         document.getElementById("unmute")
+         }
+ }
