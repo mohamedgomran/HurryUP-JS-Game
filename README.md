@@ -1,5 +1,6 @@
 # HurryUP-JS-Game
-Hurry up Game consist of three levels: 
+Hurry up Game consist of three levels:
+>>
 First level: it is normal speed of character and to reach second level you should get 3000 score.
 Level two your speed will be higher and you should get 5000 score to reach final level which your speed 
 Will be the fastest in game.
@@ -14,4 +15,7 @@ Instructions to play:
 7- You have 3 badges high score, high coins, and game master (the fastest). 
 8- To get high coins badge you should collect coins as you can.
 9- You will get high score badge If you reach high score.
-10- You will be the game master if you get high score and high coins. 
+10- You will be the game master if you get high score and high coins.
+
+ >>Try it now
+ >>https://mohamedgomran.github.io/HurryUP-JS-Game/index.html
