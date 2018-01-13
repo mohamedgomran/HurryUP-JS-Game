@@ -10,11 +10,7 @@ font-family:Oswald, sans-serif;
 letter-spacing:.1em;
 text-shadow: 0 -1px 0px rgba(0, 0, 0, 0.3);
 color: #fff;
--webkit-box-shadow: inset 0px 1px 0px #3e9cbf, 0px 5px 0px 0px #205c73, 0px 10px 5px #999;
--moz-box-shadow: inset 0px 1px 0px #3e9cbf, 0px 5px 0px 0px #205c73, 0px 10px 5px #999;
 box-shadow: inset 0px 1px 0px #3e9cbf, 0px 5px 0px 0px #205c73, 0px 10px 5px #999;
--moz-border-radius: 10px;
--webkit-border-radius: 10px;
 border-radius: 10px;
 align-items: center;
 }
@@ -29,11 +25,7 @@ font-family:Oswald, sans-serif;
 letter-spacing:.1em;
 text-shadow: 0 -1px 0px rgba(0, 0, 0, 0.3);
 color: #fff;
--webkit-box-shadow: inset 0px 1px 0px #3e9cbf, 0px 5px 0px 0px #205c73, 0px 10px 5px #999;
--moz-box-shadow: inset 0px 1px 0px #3e9cbf, 0px 5px 0px 0px #205c73, 0px 10px 5px #999;
 box-shadow: inset 0px 1px 0px #3e9cbf, 0px 5px 0px 0px #205c73, 0px 10px 5px #999;
--moz-border-radius: 10px;
--webkit-border-radius: 10px;
 border-radius: 10px;
 }
 button#start {
@@ -47,11 +39,7 @@ font-family:Oswald, sans-serif;
 letter-spacing:.1em;
 text-shadow: 0 -1px 0px rgba(0, 0, 0, 0.3);
 color: #fff;
--webkit-box-shadow: inset 0px 1px 0px #3e9cbf, 0px 5px 0px 0px #205c73, 0px 10px 5px #999;
--moz-box-shadow: inset 0px 1px 0px #3e9cbf, 0px 5px 0px 0px #205c73, 0px 10px 5px #999;
 box-shadow: inset 0px 1px 0px #3e9cbf, 0px 5px 0px 0px #205c73, 0px 10px 5px #999;
--moz-border-radius: 10px;
--webkit-border-radius: 10px;
 border-radius: 10px;
 }
 
@@ -64,7 +52,7 @@ body#firstpage {
 }
 
 body#secondpage {
-    background-image: url('5.jpg');
+    background-image: url('5.jpeg');
     background-repeat: no-repeat;
     background-attachment: fixed;
     background-position: center;
@@ -85,7 +73,7 @@ p.hurry {
 p.name {
   color: #673AB7;
   font-size: 100px;
-font-family: "Gill Sans", sans-serif;
+  font-family: "Gill Sans", sans-serif;
   direction: ltr;
 }
 #pname{
@@ -108,7 +96,7 @@ font-family: "Gill Sans", sans-serif;
 @import url(https://fonts.googleapis.com/css?family=Monoton);
 
 
-body { background: #000; color: #fff; position: relative;}
+/*body { background: #000; color: #fff; position: relative;}*/
 
 .hurry {
   position: relative;
@@ -127,7 +115,7 @@ body { background: #000; color: #fff; position: relative;}
 .hurry:before {
   content: 'Hurry';
   position: absolute;
-  top: 0;
+  top: 0px;
   z-index: 10;
   background-image: -webkit-linear-gradient(-40deg, transparent 0%, transparent 40%, #fff 50%, transparent 60%, transparent 100%);
   background-position:-680px 0;
@@ -167,4 +155,3 @@ body { background: #000; color: #fff; position: relative;}
   10% {background-position:420px 0;}
   100% {background-position:420px 0;}
 }
-
