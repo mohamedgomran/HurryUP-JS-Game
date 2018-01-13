@@ -4,36 +4,17 @@
 		<link rel="stylesheet" type="text/css" href="newbegin.css">
 		<meta charset="utf-8">
 		<title>Hurry Up</title>
-<style type="text/css">
-
-  .border{
-
-    background-color: gray;
-    border-radius: 25px;
-    
-   
-
-  }
-  .myBar{
-    background-color: #673AB7;
-    border-radius: 25px;
-
-     
-  }
-  body{
-  	background-color: gray;
-  }
-
-</style>
-
 	</head>
-	<body  onload="load()">
-		<div id ="main2" style="background-image: url(imgs/s.png);">
+		<body>
+
+	<div id ="main2" style="background-image: url('background.jpg'); background-repeat: no-repeat; width="100%" height="100%"">
+
 			<div>
-				<div id="wrapper" style="height: 165px">
-				 <!-- <h1 class="hurry">Hurry</h1> <br><br><br>
+				<embed src="music.mp3" width="100" height="60" loop="true" autostart="true" hidden="true"/>
+
+				<div id="wrapper">
+				  <h1 class="hurry">Hurry</h1> <br><br><br>
 				  <h3 class="up">UP</h3>
-				-->
 				</div>
 			</div>
 			<br> <br>
@@ -43,42 +24,7 @@
 				<button id="Play" type="button" align="center" onclick="window.location.href = 'newbegin.html' "/>Quick Play </button>
 			</p>
 			<!-- </div> -->
-			<br>
-			<br>
-			<br>
-			<br>
-			
-
-                <p align="center">
-			  <div class="border" style="width: 300px height:24px top:200px" >
-   
-               <div id="Bar" class="myBar" style="height:24px;width:0"></div>
-              </p>
 			<script src="project.js"></script>
-			<script>
-			function load()
-			{
-			  var next = document.getElementById("container");
-			  var pbar = document.getElementById("Bar");
-			  var width= 1 ;
-			  var intid=setInterval(move,15);
-			  function move()
-			  {
-			    if(width >=100)
-			    {
-			      clearInterval(intid);
-			    }else
-			    {
-			      width++;
-			      pbar.style.width=width+'%';
-
-			    }
-			  }
-			  
-
-
-			}
-</script>
 		</div>
 	</body>
 </html>
