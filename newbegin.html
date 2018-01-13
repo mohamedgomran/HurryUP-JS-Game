@@ -6,26 +6,30 @@
 </head>
 <body>
   <div id="main">
-  	<div class="header"></div>
-  	<table class="header">
-  		<tr>
-  			<th class="fixedCells">Player:</th>
-  			<th id="player" class="changingCells"></th>
-  			<th class="fixedCells">level:</th>
-  			<th id="level" class="changingCells">1</th>
-  			<th class="fixedCells"><img src="imgs/heart.png" class="headerImages"></th>
-  			<th id="lives" class="changingCells">X3</th>
-  			<th class="fixedCells"><img src="imgs/coins.png" class="headerImages"></th>
-  			<th id="coins" class="changingCells">X0</th>
-  			<th class="fixedCells">Score</th>
-  			<th id="score" class="changingCells"></th>
-  			<th class="fixedCells"><img id="highScore" src="imgs/badge1.png" class="badges"></th>
-  			<th><img id="highCoin" src="imgs/coins.png" class="badges"></th>
-  			<th><img id="highCoin" src="imgs/coins.png" class="badges"></th>
-  		</tr>
-  	</table>
-
-
+    <div class="header"></div>
+    <table class="header">
+      <tr>
+        <th class="fixedCells">Player:</th>
+        <th id="player" class="changingCells"></th>
+        <th class="fixedCells">level:</th>
+        <th id="level" class="changingCells">1</th>
+        <th class="fixedCells" colspan="2" > <th><img src="imgs/heart.png" class="headerImages"></th> <th>X</th> </th>
+        <th id="lives" class="changingCells">3</th>
+        <th class="fixedCells" colspan="2" > <th><img src="imgs/coins.png" class="headerImages"></th> <th>X</th> </th>
+        <th id="coins" class="changingCells">0</th>
+        <th class="fixedCells">Score:</th>
+        <th id="score" class="changingCells">0</th>
+        <th class="fixedCells"><img id="highScoreBadge" src="imgs/badge1.png" class="badges"></th>
+        <th><img id="highCoin" src="imgs/coins.png" class="badges"></th>
+        <th><img id="highCoin" src="imgs/coins.png" class="badges"></th>
+      </tr>
+    </table>
+  </div>
+  <div id="messageDiv">
+    <p id="message"></p>
+    <img id="messageImg" src="" style="height:200px; width:200px; border-radius: 50px;">
+    </br>
+    <button id="continue" onclick="hideMessage()">continue</button>
   </div>
 
   <script type="text/javascript" src="newbegin.js"></script>

@@ -2,6 +2,10 @@
 var charType
 var playerName
 var Speed = 4
+var showing=false
+var firstHighScore=true
+var highScore = parseInt(localStorage.getItem('highScore')) || 500;
+
 if (location.search.substring(1)==="") 
 {
   charType="penguin"
@@ -16,17 +20,51 @@ else
 ////////////////////////////////////////////////////////////////////////////////////////////
 
 /////////////////////////////////changing the header dynamically////////////////////////////
+var superDiv=document.getElementById('main')
 var player=document.getElementById("player")
 var level=document.getElementById("level")
 var lives=document.getElementById("lives")
 var coins=document.getElementById("coins")
 var score=document.getElementById("score")
+var level=document.getElementById("level")
 
 player.innerHTML=playerName
 
 ////////////////////////////////////////////////////////////////////////////////////////////
+var messageDiv=document.getElementById("messageDiv")
+var Message=document.getElementById("message")
+var button1=document.getElementById("continue")
+var messageImg=document.getElementById("messageImg")
+///////////////////////////////
+function ShowMessage (imgSrc,textMes) 
+{
+  if(!showing)
+  {messageImg.src=imgSrc;
+  Message.innerHTML=textMes;
+  superDiv.style.opacity=0.4;
+  clearInterval(SetIntervalChar)
+  clearInterval(SetInterval)
+  SetInterval=null
+  SetIntervalChar=null
+  messageDiv.style.visibility="visible"
+  messageDiv.classList.add("messageAnimation")
+  button1.classList.add("button")
 
+  showing=true}
+}
 
+function hideMessage ()   ////still need modification for repositioning obstacles
+{
+  messageDiv.classList.remove("messageAnimation")
+    button1.classList.remove("button")
+  superDiv.style.opacity=1;
+  messageDiv.style.visibility="hidden";
+  showing=false;
+  if(!parseInt(lives.innerHTML))
+    {location.reload()}
+
+}
+///////////////////////////////
 class Pos {
   constructor(x1=0,y1=0){
     this.X = x1
@@ -143,7 +181,6 @@ class Picture{
 
 }
 
-
 class Obstacle extends Picture{
   constructor(div1, velocity1=5, ilink1=null){
     super(div1, velocity1, ilink1)
@@ -161,9 +198,13 @@ class Obstacle extends Picture{
 
 
   move(Char1, i){
-    score.innerHTML="X"+ Char1.Score++  ////////////// modification
+    score.innerHTML = Char1.Score++  ////////////// modification
     
-
+    if(Char1.Score > highScore && firstHighScore)
+    {ShowMessage("imgs/badge1.png","congratulations "+ playerName + "</br> you have exceeded the highest Score")
+      highScoreBadge.style.opacity=1;
+      firstHighScore=false
+    }
 
     let CurrentDivMove = document.getElementById(this.Div.Id)
     this.Posistion.X += this.Velocity
@@ -171,7 +212,6 @@ class Obstacle extends Picture{
     CurrentDivMove.style.right = `${this.Posistion.X}px`
 
     if(this.Posistion.X>=CurrentDivMove.parentElement.clientWidth){
-      
       var NewRightPos = CreatingRandomPos(400,500)
       var [NewWidth, NewHeight] = CreatingRandomDim(30,50)
       this.Posistion.X=-NewRightPos+Math.min(...ObsPosList)
@@ -185,29 +225,36 @@ class Obstacle extends Picture{
        (this.Posistion.X + this.Div.Width) >= (Char1.Posistion.X) &&
        (this.Posistion.X <= (Char1.Posistion.X + Char1.Div.Width)) )
     {
-      if (!Char1.Life)
-        {alert("Game Over")
-          location.reload();}
+      Char1.IsTop=1
+      Char1.Life--;
+      lives.innerHTML=Char1.Life
+      if (!Char1.Life){
+        if (Char1.Score > highScore){
+          highScore = Char1.Score;
+          localStorage.setItem('highScore', highScore);
+          localStorage.setItem('username', playerName);
+          localStorage.setItem('coins', Char1.CoinCollected)
+          ShowMessage("imgs/badge1.png","Game Over </br> congratulations "+ playerName + "</br> you have reached a new high Score = </br>" +highScore);
+        }
+        else{
+          ShowMessage("imgs/gameOver.jpg","Game Over </br> Try Again </br> Your Score = "+Char1.Score+ "</br> Your coins = "+Char1.CoinCollected)
+        }
+
+      }
       else{
-        alert("you still have lives, hurry up :D")
-        Char1.Life--
-        lives.innerHTML="X"+Char1.Life
+        ShowMessage("imgs/brokenHeart.png","you still have "+ Char1.Life+ " extra lives </br> Hurry Up")
 
         var NewRightPos = CreatingRandomPos(400,500)
         var [NewWidth, NewHeight] = CreatingRandomDim(30,50)
         this.Posistion.X=-NewRightPos+Math.min(...ObsPosList)
         ObsPosList[i] = this.Posistion.X
-
-        //No need to change dim here
-        // CurrentDivMove.style.width = NewWidth
-        // CurrentDivMove.style.height = NewHeight
       }
     }
 
 
     //Level Handling //
 
-    if (Char1.Score>200){
+    if (Char1.Score>2000){
       if(!Char1.Level2)
       {
         Speed = 6
@@ -222,10 +269,10 @@ class Obstacle extends Picture{
         Obstacle.change(ObsImg, Speed, "imgs/obs.png")
         Coin.change(CoinImg, Speed, "imgs/coin.png")
         Picture.change(FooterImg, Speed, "imgs/ground.png")
-        Char1.Level2=1
-
+        Char1.Level2 = 1
+        level.innerHTML = 2
       }
-      if(Char1.Score>500&&!Char1.Level3){
+      if(Char1.Score>5000&&!Char1.Level3){
         Speed = 8
         FooterImg[0].Posistion.X=0
         var CurrentDiv1 = document.getElementById(FooterImg[0].Div.Id)
@@ -240,6 +287,8 @@ class Obstacle extends Picture{
         Picture.change(FooterImg, Speed, "imgs/ground.png")
         Char1.Level3 = 1
         Char1.Velocity = 8
+        level.innerHTML = 3
+
       }
     }
   }
@@ -275,7 +324,7 @@ class Coin extends Obstacle{
       
       else{
             Char1.CoinCollected++;
-            coins.innerHTML="X"+Char1.CoinCollected;   ///modification
+            coins.innerHTML= Char1.CoinCollected;   ///modification
           }
 
 
@@ -375,26 +424,41 @@ else
 
 let SetInterval=null
 let SetIntervalChar=null
-document.addEventListener("keydown", function(e){
+var x=document.addEventListener("keydown", function(e){
   
-  if(SetIntervalChar===null){
-     if(e.keyCode==32){
-      SetIntervalChar = setInterval(function(){
-      CharacterImg.move()
-      },16)
-    }
-    
+  if (e.keyCode===27){
+    ShowMessage("imgs/pause.png","Pause");CharacterImg.IsTop=1;CharacterImg.Posistion.Y+=1
   }
 
-  if(SetInterval===null){
-    SetInterval = setInterval(function(){
-      Footerimg1.move()
-      Footerimg2.move()
-      // Obsimg.move()
-      for (i in ObsImg) {ObsImg[i].move(CharacterImg, i)}
-      for (j in CoinImg) {CoinImg[j].move(CharacterImg, j)}
+  
+  if(e.keyCode==32)
+  {
+    if(SetIntervalChar===null)
+    {
+      if(e.keyCode==32)
+      {
+        hideMessage();
+        SetIntervalChar = setInterval(function()
+        {
+          CharacterImg.move()
+        },16)
+      }
+    }
 
-    },16)
+    if(SetInterval===null)
+    {
+      if(e.keyCode==32)
+      {
+        SetInterval = setInterval(function()
+        {
+          Footerimg1.move()
+          Footerimg2.move()
+          // Obsimg.move()
+          for (i in ObsImg) {ObsImg[i].move(CharacterImg, i)}
+          for (j in CoinImg) {CoinImg[j].move(CharacterImg, j)}
+
+        },16)
+      }
+    }
   }
 })
-
