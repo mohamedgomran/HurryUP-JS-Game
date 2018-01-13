@@ -3,8 +3,13 @@ var charType
 var playerName
 var Speed = 4
 var showing=false
-var firstHighScore=true
+
+var firstCoinMaster=true
+var firstGameMaster=true
+let firstHighScore=true
 var highScore = parseInt(localStorage.getItem('highScore')) || 500;
+var highCoin = parseInt(localStorage.getItem('coins')) || 5;
+
 
 if (location.search.substring(1)==="") 
 {
@@ -27,15 +32,18 @@ var lives=document.getElementById("lives")
 var coins=document.getElementById("coins")
 var score=document.getElementById("score")
 var level=document.getElementById("level")
+var highScoreBadge=document.getElementById('highScoreBadge')
+var coinMasterBadge=document.getElementById('coinMaster')
+var gameMasterBadge=document.getElementById('gameMaster')
 
 player.innerHTML=playerName
 
 ////////////////////////////////////////////////////////////////////////////////////////////
 var messageDiv=document.getElementById("messageDiv")
 var Message=document.getElementById("message")
-var button1=document.getElementById("continue")
+// var button1=document.getElementById("continue")
 var messageImg=document.getElementById("messageImg")
-///////////////////////////////
+
 function ShowMessage (imgSrc,textMes) 
 {
   if(!showing)
@@ -48,15 +56,14 @@ function ShowMessage (imgSrc,textMes)
   SetIntervalChar=null
   messageDiv.style.visibility="visible"
   messageDiv.classList.add("messageAnimation")
-  button1.classList.add("button")
-
+  // button1.classList.add("button")
   showing=true}
 }
 
-function hideMessage ()   ////still need modification for repositioning obstacles
+function hideMessage ()
 {
   messageDiv.classList.remove("messageAnimation")
-    button1.classList.remove("button")
+  // button1.classList.remove("button")
   superDiv.style.opacity=1;
   messageDiv.style.visibility="hidden";
   showing=false;
@@ -64,7 +71,8 @@ function hideMessage ()   ////still need modification for repositioning obstacle
     {location.reload()}
 
 }
-///////////////////////////////
+
+
 class Pos {
   constructor(x1=0,y1=0){
     this.X = x1
@@ -198,7 +206,7 @@ class Obstacle extends Picture{
 
 
   move(Char1, i){
-    score.innerHTML = Char1.Score++  ////////////// modification
+    score.innerHTML = Char1.Score++
     
     if(Char1.Score > highScore && firstHighScore)
     {ShowMessage("imgs/badge1.png","congratulations "+ playerName + "</br> you have exceeded the highest Score")
@@ -206,6 +214,12 @@ class Obstacle extends Picture{
       firstHighScore=false
     }
 
+    if(Char1.Score>highScore && Char1.Score>10000 && Char1.CoinCollected>highCoin && Char1.CoinCollected>50 && firstGameMaster)
+    {
+      ShowMessage("imgs/gameMaster.png","congratulations "+ playerName + "</br> you are now the Game Master")
+      gameMasterBadge.style.opacity=1;
+      firstGameMaster=false;
+    }
     let CurrentDivMove = document.getElementById(this.Div.Id)
     this.Posistion.X += this.Velocity
     ObsPosList[i] = this.Posistion.X
@@ -225,8 +239,8 @@ class Obstacle extends Picture{
        (this.Posistion.X + this.Div.Width) >= (Char1.Posistion.X) &&
        (this.Posistion.X <= (Char1.Posistion.X + Char1.Div.Width)) )
     {
-      if (Char1.Posistion.Y==20){Char1.IsTop=1;Char1.Posistion.Y+=20}
-      if (Char1.Posistion.Y>20){Char1.IsTop=1}
+      if (Char1.Posistion.Y==Char1.Div.Bottom){Char1.IsTop=1;Char1.Posistion.Y+=20}
+      if (Char1.Posistion.Y>Char1.Div.Bottom){Char1.IsTop=1}
         
       Char1.Life--;
       lives.innerHTML=Char1.Life
@@ -236,10 +250,11 @@ class Obstacle extends Picture{
           localStorage.setItem('highScore', highScore);
           localStorage.setItem('username', playerName);
           localStorage.setItem('coins', Char1.CoinCollected)
-          ShowMessage("imgs/badge1.png","Game Over </br> congratulations "+ playerName + "</br> you have reached a new high Score = </br>" +highScore);
+          ShowMessage("imgs/badge1.png","congratulations <h4>"+ playerName + "</h4></br> you have reached a new high Score = </br>" +highScore);
         }
         else{
-          ShowMessage("imgs/gameOver.jpg","Game Over </br> Try Again </br> Your Score = "+Char1.Score+ "</br> Your coins = "+Char1.CoinCollected)
+          // button1.innerHTML="Retry"
+          ShowMessage("imgs/gameOver.png","Try Again </br><h4>"+ playerName + "</h4> Your Score = "+Char1.Score+ "</br> Your coins = "+Char1.CoinCollected)
         }
 
       }
@@ -326,7 +341,13 @@ class Coin extends Obstacle{
       
       else{
             Char1.CoinCollected++;
-            coins.innerHTML= Char1.CoinCollected;   ///modification
+            coins.innerHTML= Char1.CoinCollected;
+            if(Char1.CoinCollected > highCoin && firstCoinMaster)
+              {
+                ShowMessage("imgs/coinMaster.jpg","congratulations "+ playerName + "</br> you have exceeded the highest coins recorded")
+                coinMasterBadge.style.opacity=1;
+                firstCoinMaster=false;
+              }   ///modification
           }
 
 
@@ -345,7 +366,7 @@ class Coin extends Obstacle{
 
 
 class Character extends Picture{
-  constructor(div1, velocity1=5, ilink1=null, jump1=0, life1=3){
+  constructor(div1, velocity1=5, ilink1=null, jump1=0, life1=5){
     super(div1, velocity1, ilink1)
     this.Jump = jump1
     this.IsTop = 0
@@ -426,10 +447,13 @@ else
 
 let SetInterval=null
 let SetIntervalChar=null
+// var pause=false
+
 var x=document.addEventListener("keydown", function(e){
-  
   if (e.keyCode===27){
-    ShowMessage("imgs/pause.png","Pause");CharacterImg.IsTop=1;CharacterImg.Posistion.Y+=1
+    {ShowMessage("imgs/pause.png","Pause");
+    CharacterImg.Posistion.Y+=1;
+    CharacterImg.IsTop=1;}
   }
 
   
@@ -464,3 +488,32 @@ var x=document.addEventListener("keydown", function(e){
     }
   }
 })
+
+// var btn=button1.addEventListener("click",function() {
+  
+//   if(pause)
+//     {hideMessage("imgs/pause.png","Pause");
+//     pause=false;}
+
+//   if(SetIntervalChar===null)
+//     {
+//         hideMessage();
+//         SetIntervalChar = setInterval(function()
+//         {
+//           CharacterImg.move()
+//         },16)
+//     }
+
+//     if(SetInterval===null)
+//     {
+//       SetInterval = setInterval(function()
+//       {
+//         Footerimg1.move()
+//         Footerimg2.move()
+//         // Obsimg.move()
+//         for (i in ObsImg) {ObsImg[i].move(CharacterImg, i)}
+//         for (j in CoinImg) {CoinImg[j].move(CharacterImg, j)}
+
+//       },16)
+//     }
+// })
