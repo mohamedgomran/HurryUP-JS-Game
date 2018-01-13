@@ -225,7 +225,9 @@ class Obstacle extends Picture{
        (this.Posistion.X + this.Div.Width) >= (Char1.Posistion.X) &&
        (this.Posistion.X <= (Char1.Posistion.X + Char1.Div.Width)) )
     {
-      Char1.IsTop=1
+      if (Char1.Posistion.Y==20){Char1.IsTop=1;Char1.Posistion.Y+=20}
+      if (Char1.Posistion.Y>20){Char1.IsTop=1}
+        
       Char1.Life--;
       lives.innerHTML=Char1.Life
       if (!Char1.Life){
