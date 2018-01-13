@@ -31,7 +31,7 @@
 
 .obs{
 	position: absolute;
-	z-index: -2;
+	z-index: 0;
 }
 
 .imgindiv{
@@ -72,14 +72,15 @@
 	opacity: 0.4;
 }
 @keyframes example {
-	from{width: 100px; height: 50px; }
-	to{width: 300px; height: 150px;}
+	from{width: 300px; height: 50px; }
+	to{width: 300px; height: 400px;}
 	/*30%{width: 100px; height: 50px; }
 	60%{width: 200px; height: 100px; }
 	100%{width: 300px; height: 150px; }*/
 }
 #messageDiv{
 	position: relative;
+	margin: auto;
 	border-radius: 47px 47px 47px 47px;
 	border: 6px solid #c90e46;
 	box-shadow: 13px 15px 29px 7px rgba(87,87,87,1);
@@ -88,17 +89,21 @@
 	font-family: cursive;
 	visibility: hidden;
 	width: 300px;
-	height: 150px; 
+	height: 400px; 
 	padding: 10px;
-	margin-top: -20em;
-	margin-left: 770px;
+	margin-top: -22em;
+	/*margin-left: 770px;*/
 	z-index: 10;
+	/*overflow-y: scroll;*/
+}
+
+#messageImg{
+	position: relative;
 }
 
 .messageAnimation{
 	animation-name: example;
 	animation-duration: 1s;
-	animation-direction: alternate;
 }
 
 .button {
@@ -119,7 +124,6 @@
 .button {
     background-color:#f44336 ; 
     color: white; 
-    /*border: 2px solid;*/
     border-radius: 20px;
 }
 .button:hover {
