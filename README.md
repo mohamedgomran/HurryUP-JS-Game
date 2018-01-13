@@ -30,4 +30,4 @@ Instructions to play:
 
 Try it now
 
-    >>https://mohamedgomran.github.io/HurryUP-JS-Game/index.html
+    https://mohamedgomran.github.io/HurryUP-JS-Game/index.html
