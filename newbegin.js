@@ -239,7 +239,7 @@ class Obstacle extends Picture{
         Coin.change(CoinImg, Speed, "imgs/coin.png")
         Picture.change(FooterImg, Speed, "imgs/ground.png")
         Char1.Level3 = 1
-        Char1.Velocity = 6
+        Char1.Velocity = 8
       }
     }
   }
@@ -311,11 +311,11 @@ class Character extends Picture{
 
     if (this.Posistion.Y<this.Jump && !this.IsTop) {
       this.Posistion.Y+=this.Velocity
-      if(this.Posistion.Y==this.Jump){this.IsTop=1}
+      if(this.Posistion.Y>=this.Jump){this.IsTop=1}
     }
     else if (this.Posistion.Y>this.Div.Bottom) {
       this.Posistion.Y -= this.Velocity
-      if(this.Posistion.Y==this.Div.Bottom){this.IsTop=0;clearInterval(SetIntervalChar);SetIntervalChar=null}
+      if(this.Posistion.Y<=this.Div.Bottom){this.IsTop=0;clearInterval(SetIntervalChar);SetIntervalChar=null}
     }
     CurrentDivMove.style.bottom = `${this.Posistion.Y}px`
 
