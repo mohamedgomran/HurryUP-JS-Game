@@ -28,6 +28,6 @@ Instructions to play:
 
 10- You will be the game master if you get high score and high coins.
 
-Try it now
+[Try it now](https://mohamedgomran.github.io/HurryUP-JS-Game/index.html)
 
-    https://mohamedgomran.github.io/HurryUP-JS-Game/index.html
+    
